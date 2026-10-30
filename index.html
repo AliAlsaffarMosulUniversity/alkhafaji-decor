@@ -162,6 +162,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .tile-wrap { break-inside: avoid; margin: 0 0 16px; position: relative; }
 .tile-del { position: absolute; top: 10px; inset-inline-end: 10px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); background: rgba(150, 40, 25, .82); color: #fff; display: grid; place-items: center; padding: 0; box-shadow: 0 6px 16px -6px rgba(0,0,0,.6); transition: transform .15s ease, background-color .15s ease; }
 .tile-del:hover { background: #b23a26; transform: scale(1.08); }
+.tile-wa { position: absolute; bottom: 12px; inset-inline-end: 12px; z-index: 2; width: 40px; height: 40px; border-radius: 50%; background: #25d366; color: #fff; display: grid; place-items: center; box-shadow: 0 6px 16px -6px rgba(0,0,0,.6); transition: transform .15s ease; }
+.tile-wa:hover { transform: scale(1.1); }
+.tile-wa svg { width: 22px; height: 22px; }
 .tile-del svg { width: 18px; height: 18px; }
 .tile { margin: 0; position: relative; display: block; width: 100%; padding: 0; border: 0; background: var(--bg-2); border-radius: 6px; overflow: hidden; text-align: start; color: #fff; animation: rise .6s ease both; }
 .tile img { display: block; width: 100%; height: auto; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
@@ -259,7 +262,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
 .toast { position: fixed; z-index: 60; top: calc(env(safe-area-inset-top, 0px) + 70px); left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 20px; border-radius: 999px; font-size: 14px; box-shadow: var(--shadow); }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
-@media (max-width: 520px) { .wall { columns: 2 150px; column-gap: 10px; } .tile-wrap { margin-bottom: 10px; } .tile-del { top: 8px; inset-inline-end: 8px; width: 34px; height: 34px; } .tile .cap { padding: 30px 10px 10px; } .tile .cap b { font-size: 14px; } .tile .cap span { display: none; } }
+@media (max-width: 520px) { .wall { columns: 2 150px; column-gap: 10px; } .tile-wrap { margin-bottom: 10px; } .tile-del { top: 8px; inset-inline-end: 8px; width: 34px; height: 34px; } .tile-wa { bottom: 8px; inset-inline-end: 8px; width: 34px; height: 34px; } .tile-wa svg { width: 19px; height: 19px; } .tile .cap { padding: 30px 10px 10px; } .tile .cap b { font-size: 14px; } .tile .cap span { display: none; } }
 </style>
 </head>
 <body>
@@ -527,7 +530,27 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
 
   const imgUrl = (d, size) => CFG.SUPABASE_URL + "/storage/v1/object/public/" + BUCKET + "/" + size + "/" + d.image + ".jpg";
   const label = d => d.title || ("تصميم " + AR(d.num));
-  const TRASH_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>';
+  const WA_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2a9.7 9.7 0 0 0-8.4 14.6L2.3 21.7l5-1.3A9.7 9.7 0 1 0 12 2.2zm0 17.7a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 19.9zm4.4-6c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.8 1c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a.9.9 0 0 0-.7.3 2.8 2.8 0 0 0-.9 2.1 4.9 4.9 0 0 0 1 2.6 11.2 11.2 0 0 0 4.3 3.8c1.6.7 2.2.7 3 .6.5-.1 1.4-.6 1.6-1.2.2-.6.2-1 .1-1.2l-.5-.2z"/></svg>';
+  // one message used by every WhatsApp button: number, section, the photo itself and a link back to it
+  const designWaLink = d => {
+    const wa = state.info.whatsapp || state.info.phone;
+    const lines = [
+      "مرحباً، أريد الاستفسار عن التصميم رقم " + d.num + (d.title ? " - " + d.title : ""),
+      "القسم: " + d.category,
+      "الصورة: " + imgUrl(d, "full"),
+      "رابط التصميم في المعرض: " + location.origin + location.pathname + "#d" + d.num
+    ];
+    return waLink(wa, lines.join("\n"));
+  };
+  // a shared link ending in #d15 opens design 15 straight away
+  function openFromHash() {
+    const m = /^#d(\d+)$/.exec(location.hash); if (!m) return;
+    const d = state.designs.find(x => String(x.num) === m[1]); if (!d) return;
+    if (!state.view.includes(d)) { state.filter = "الكل"; render(); }
+    openLb(state.view.indexOf(d));
+  }
+  addEventListener("hashchange", openFromHash);
+  const TRASH_SVG ='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>';
 
   function toast(t) { const el = $("toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => el.hidden = true, 2600); }
   document.querySelectorAll("[data-close]").forEach(b => b.onclick = () => b.closest("dialog").close());
@@ -660,6 +683,13 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
       cap.append(b, s); t.append(img, num, cap); t.onclick = () => openLb(i);
       // a wrapper lets the owner's delete button sit beside (not inside) the tile button
       const w = document.createElement("div"); w.className = "tile-wrap"; w.appendChild(t);
+      if (state.info.whatsapp || state.info.phone) {
+        const wa = document.createElement("a"); wa.className = "tile-wa";
+        wa.href = designWaLink(d); wa.target = "_blank"; wa.rel = "noopener";
+        wa.title = "اسأل عن هذا التصميم عبر واتساب"; wa.setAttribute("aria-label", "واتساب: اسأل عن " + label(d));
+        wa.innerHTML = WA_SVG;
+        w.appendChild(wa);
+      }
       if (state.admin) {
         const del = document.createElement("button"); del.type = "button"; del.className = "tile-del";
         del.title = "حذف التصميم"; del.setAttribute("aria-label", "حذف " + label(d));
@@ -692,6 +722,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
     if (!s.error && s.data) applyInfo(s.data);
     render();
     if (!$("lb").hidden) showLb();
+    openFromHash();
   }
 
   // ---------- lightbox ----------
@@ -709,7 +740,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
     $("lbPrev").hidden = $("lbNext").hidden = v.length < 2;
     const wa = state.info.whatsapp || state.info.phone;
     $("lbWa").hidden = !wa;
-    if (wa) $("lbWa").href = waLink(wa, "مرحباً، أريد الاستفسار عن التصميم رقم " + d.num + (d.title ? " (" + d.title + ")" : ""));
+    if (wa) $("lbWa").href = designWaLink(d);
     const nx = v[(state.idx + 1) % v.length]; if (nx) new Image().src = imgUrl(nx, "full");
   }
   $("lbClose").onclick = closeLb;
