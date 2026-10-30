@@ -144,6 +144,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .slide.on { opacity: .999; }
 .tv-chin { height: 30px; display: flex; align-items: center; justify-content: center; gap: 10px; position: relative; }
 .tv-brand { font-family: var(--brand); font-size: 15px; line-height: 1; color: #f7d3db; text-shadow: 0 1px 0 rgba(0, 0, 0, .5); letter-spacing: .02em; }
+.tv-logo { width: 22px; height: 22px; border-radius: 5px; box-shadow: 0 0 0 1px rgba(255, 210, 220, .25); }
+/* the owner's gold-on-navy logo, shown as a framed badge above the name */
+.hero-logo { display: block; width: clamp(120px, 16vw, 170px); height: auto; margin: 0 auto 18px; border-radius: 28px; box-shadow: 0 0 0 1px var(--line), 0 22px 44px -18px rgba(43, 11, 19, .55); }
 .tv-led { position: absolute; inset-inline-start: 18px; width: 6px; height: 6px; border-radius: 50%; background: #5cff9d; box-shadow: 0 0 8px #5cff9d; }
 
 /* story-style progress segments, as on phone stories */
@@ -322,6 +325,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
     <div class="pattern" aria-hidden="true"></div>
     <div class="wrap">
       <div>
+        <img class="hero-logo" src="logo.jpg" alt="شعار محمد الخفاجي للديكور" width="640" height="640">
         <div class="eyebrow"><span>أسقف جبس بورد</span><span>جدران وخلفيات</span><span>واجهات</span><span>تصميم وتنفيذ</span></div>
         <h1 class="brand" id="heroName">ديكورات <em>محمد الخفاجي</em></h1>
         <p class="lede" id="heroTag">نحوّل الجدران والأسقف إلى قطع فنية. تصفّح أعمالنا، واختر التصميم الذي يناسب بيتك، وأرسل لنا رقمه.</p>
@@ -362,7 +366,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
               </div>
             </div>
           </div>
-          <div class="tv-chin"><span class="tv-brand" id="tvBrand">الخفاجي</span><span class="tv-led" aria-hidden="true"></span></div>
+          <div class="tv-chin"><img class="tv-logo" src="logo-mark.png" alt="" aria-hidden="true"><span class="tv-brand" id="tvBrand">الخفاجي</span><span class="tv-led" aria-hidden="true"></span></div>
         </div>
       </figure>
     </div>
@@ -1049,7 +1053,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
     }
     // centre emblem (error correction H tolerates it)
     try {
-      const logo = await loadImg("icon-192.png"), L = area * .2, lx = ox + (area - L) / 2, ly = oy + (area - L) / 2;
+      const logo = await loadImg("logo-mark.png"), L = area * .2, lx = ox + (area - L) / 2, ly = oy + (area - L) / 2;
       g.fillStyle = "#ffffff"; roundRect(g, lx - 12, ly - 12, L + 24, L + 24, 22); g.fill();
       g.drawImage(logo, lx, ly, L, L);
     } catch (e) {}

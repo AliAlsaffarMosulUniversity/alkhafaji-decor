@@ -1,9 +1,9 @@
 // Offline shell for the installed app. Bump VERSION after changing site files.
-const VERSION = "v11";
+const VERSION = "v12";
 const SHELL = `shell-${VERSION}`;
 const RUNTIME = `runtime-${VERSION}`;
 const SHELL_FILES = ["./", "./index.html", "./config.js", "./manifest.webmanifest",
-  "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
+  "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./logo.jpg", "./logo-mark.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(SHELL).then(c => c.addAll(SHELL_FILES)).then(() => self.skipWaiting()));
