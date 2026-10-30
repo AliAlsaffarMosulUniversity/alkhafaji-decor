@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ديكورات محمد الخفاجي</title>
+<meta name="description" content="معرض أعمال ديكورات محمد الخفاجي: أسقف جبس بورد، جدران، واجهات وديكورات داخلية.">
+<meta name="theme-color" content="#0b1412">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ديكورات الخفاجي">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=El+Messiri:wght@500;600;700&family=Alexandria:wght@300;400;500;600&display=swap">
+<script>
+  // apply saved theme before first paint
+  try { const t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<style>
+/* Layout: a gypsum-and-brass showroom. Calligraphic name beside an arched niche holding the newest work,
+   then a masonry wall of numbered designs. Night mode is deep lacquered green with gold. */
+:root {
+  --bg: #f2f2ee;            /* gypsum */
+  --bg-2: #e7e8e2;
+  --surface: #fbfbf9;
+  --ink: #15211d;
+  --muted: #5d6a64;
+  --line: #d3d7cf;
+  --gold: #a07a32;          /* brushed brass */
+  --gold-2: #c9a45a;
+  --emerald: #0f4e40;
+  --on-gold: #ffffff;
+  --scrim: rgba(9, 15, 13, .94);
+  --shadow: 0 30px 60px -30px rgba(21, 33, 29, .35);
+  --brand: "Aref Ruqaa", "Amiri", "Traditional Arabic", serif;
+  --display: "El Messiri", "Segoe UI", Tahoma, sans-serif;
+  --body: "Alexandria", "Segoe UI", Tahoma, Arial, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b1412; --bg-2: #0f1b18; --surface: #13221e; --ink: #efe9dc; --muted: #9ba79f; --line: #24342f;
+    --gold: #d9b56a; --gold-2: #f0d595; --emerald: #3aa58a; --on-gold: #1a1407;
+    --scrim: rgba(4, 8, 7, .96); --shadow: 0 30px 70px -30px rgba(0, 0, 0, .8); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b1412; --bg-2: #0f1b18; --surface: #13221e; --ink: #efe9dc; --muted: #9ba79f; --line: #24342f;
+  --gold: #d9b56a; --gold-2: #f0d595; --emerald: #3aa58a; --on-gold: #1a1407;
+  --scrim: rgba(4, 8, 7, .96); --shadow: 0 30px 70px -30px rgba(0, 0, 0, .8); color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body); font-weight: 300; font-size: 16px; line-height: 1.8;
+  transition: background-color .4s ease, color .4s ease;
+  -webkit-font-smoothing: antialiased;
+}
+.gutter { padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1240px; margin: 0 auto; }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+/* girih star pattern, tinted by token through a mask */
+.pattern { position: absolute; inset: 0; background: var(--gold); opacity: .09; pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='black' stroke-width='1'%3E%3Cpath d='M40 8l9 23 23 9-23 9-9 23-9-23-23-9 23-9z'/%3E%3Cpath d='M40 18l15.6 6.4L62 40l-6.4 15.6L40 62l-15.6-6.4L18 40l6.4-15.6z'/%3E%3Ccircle cx='40' cy='40' r='6'/%3E%3Cpath d='M0 0l8 8M80 0l-8 8M0 80l8-8M80 80l-8-8'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 80px 80px;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='black' stroke-width='1'%3E%3Cpath d='M40 8l9 23 23 9-23 9-9 23-9-23-23-9 23-9z'/%3E%3Cpath d='M40 18l15.6 6.4L62 40l-6.4 15.6L40 62l-15.6-6.4L18 40l6.4-15.6z'/%3E%3Ccircle cx='40' cy='40' r='6'/%3E%3Cpath d='M0 0l8 8M80 0l-8 8M0 80l8-8M80 80l-8-8'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 80px 80px; }
+
+/* top bar */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 10px; }
+.mark { display: flex; align-items: center; gap: 10px; text-decoration: none; min-width: 0; }
+.mark img { width: 34px; height: 34px; border-radius: 9px; }
+.mark span { font-family: var(--brand); font-size: 22px; line-height: 1; color: var(--gold); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar nav { display: flex; align-items: center; gap: 6px; }
+.navlink { text-decoration: none; padding: 6px 12px; border-radius: 999px; font-size: 14px; color: var(--muted); }
+.navlink:hover { color: var(--ink); }
+.round { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); display: inline-grid; place-items: center; padding: 0; color: var(--ink); }
+.round:hover { border-color: var(--gold); color: var(--gold); }
+.round svg { width: 19px; height: 19px; }
+.theme-sun { display: none; }
+:root[data-theme="dark"] .theme-sun { display: block; } :root[data-theme="dark"] .theme-moon { display: none; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .theme-sun { display: block; } :root:not([data-theme="light"]) .theme-moon { display: none; } }
+@media (max-width: 560px) { .navlink { display: none; } }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 999px; padding: 11px 22px; border: 1px solid var(--line); background: var(--surface); text-decoration: none; font-weight: 500; font-size: 15px; transition: transform .2s ease, border-color .2s ease, background-color .2s ease; }
+.btn:hover { border-color: var(--gold); transform: translateY(-1px); }
+.btn svg { width: 18px; height: 18px; flex: none; }
+.btn.gold { background: linear-gradient(135deg, var(--gold), var(--gold-2)); color: var(--on-gold); border-color: transparent; box-shadow: 0 12px 26px -14px var(--gold); }
+.btn.small { padding: 7px 16px; font-size: 14px; }
+.btn.danger { color: #c0442f; }
+.btn:disabled { opacity: .5; cursor: default; transform: none; }
+
+/* hero */
+.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); background: radial-gradient(120% 90% at 85% 10%, var(--bg-2), var(--bg) 60%); }
+.hero .wrap { position: relative; display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(28px, 5vw, 72px); align-items: center; padding-block: clamp(40px, 7vw, 96px); }
+.eyebrow { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 13px; letter-spacing: .02em; color: var(--emerald); font-weight: 500; }
+.eyebrow span + span::before { content: "◆"; font-size: 7px; vertical-align: middle; margin-inline-end: 14px; color: var(--gold); }
+.brand { font-family: var(--brand); font-weight: 700; font-size: clamp(54px, 10vw, 128px); line-height: 1.25; margin: 14px 0 6px; color: var(--ink); text-wrap: balance; }
+.brand em { font-style: normal; display: block; background: linear-gradient(100deg, var(--gold), var(--gold-2) 45%, var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lede { font-size: clamp(16px, 1.6vw, 19px); color: var(--muted); max-width: 46ch; margin: 0; }
+.cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.facts { display: flex; gap: 28px; margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--line); flex-wrap: wrap; }
+.facts div { display: grid; }
+.facts b { font-family: var(--display); font-size: 30px; font-weight: 600; line-height: 1.1; color: var(--gold); font-variant-numeric: tabular-nums; }
+.facts span { font-size: 13px; color: var(--muted); }
+
+/* arched niche */
+.niche { position: relative; width: min(100%, 440px); justify-self: center; aspect-ratio: 3 / 4; }
+.niche::before { content: ""; position: absolute; inset: -14px; border: 1px solid var(--gold); border-radius: 50% 50% 6px 6px / 37% 37% 6px 6px; opacity: .7; }
+.niche::after { content: ""; position: absolute; inset: -28px; border: 1px solid var(--gold); border-radius: 50% 50% 6px 6px / 38% 38% 6px 6px; opacity: .25; }
+.arch { position: absolute; inset: 0; border-radius: 50% 50% 4px 4px / 36% 36% 4px 4px; overflow: hidden; background: var(--bg-2); box-shadow: var(--shadow); }
+.arch img { width: 100%; height: 100%; object-fit: cover; display: block; animation: settle 1.4s cubic-bezier(.2,.7,.2,1) both; }
+.arch .pattern { opacity: .22; }
+.arch-empty { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 30px; color: var(--muted); font-size: 14px; }
+.arch-empty b { display: block; font-family: var(--display); font-weight: 600; font-size: 20px; color: var(--ink); }
+.niche-tag { position: absolute; bottom: 16px; inset-inline-start: 16px; inset-inline-end: 16px; background: color-mix(in srgb, var(--surface) 88%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-radius: 10px; padding: 10px 14px; font-size: 13px; display: flex; justify-content: space-between; gap: 10px; border: 1px solid var(--line); }
+.niche-tag b { font-weight: 500; }
+.niche-tag span { color: var(--gold); white-space: nowrap; }
+@keyframes settle { from { transform: scale(1.12); filter: saturate(.6); } to { transform: none; filter: none; } }
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: 1fr; text-align: center; }
+  .eyebrow, .cta, .facts { justify-content: center; }
+  .lede { margin-inline: auto; }
+  .niche { width: min(62%, 340px); grid-row: 1; margin-top: 18px; }
+}
+
+/* gallery */
+.section { padding-block: clamp(44px, 6vw, 80px); }
+.head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 26px; }
+.head h2 { font-family: var(--display); font-weight: 700; font-size: clamp(28px, 4vw, 42px); line-height: 1.2; margin: 0; text-wrap: balance; }
+.head p { margin: 4px 0 0; color: var(--muted); }
+.rail { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 8px; margin-bottom: 18px; scrollbar-width: none; }
+.rail::-webkit-scrollbar { display: none; }
+.chip { flex: none; border: 1px solid var(--line); background: var(--surface); padding: 8px 18px; border-radius: 999px; color: var(--muted); font-size: 14px; transition: all .2s ease; }
+.chip:hover { color: var(--ink); border-color: var(--gold); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.chip .n { font-size: 12px; opacity: .65; margin-inline-start: 6px; font-variant-numeric: tabular-nums; }
+
+.wall { columns: 3 300px; column-gap: 16px; }
+.tile { break-inside: avoid; margin: 0 0 16px; position: relative; display: block; width: 100%; padding: 0; border: 0; background: var(--bg-2); border-radius: 6px; overflow: hidden; text-align: start; color: #fff; animation: rise .6s ease both; }
+.tile img { display: block; width: 100%; height: auto; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+.tile::after { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(255,255,255,.0); border-radius: 3px; transition: border-color .35s ease; pointer-events: none; }
+.tile:hover::after { border-color: rgba(240, 213, 149, .8); }
+.tile:hover img { transform: scale(1.05); }
+.tile .num { position: absolute; top: 12px; inset-inline-start: 12px; background: rgba(10,16,14,.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); font-size: 12px; padding: 2px 10px; border-radius: 999px; font-variant-numeric: tabular-nums; }
+.tile .cap { position: absolute; inset: auto 0 0 0; padding: 40px 16px 14px; background: linear-gradient(to top, rgba(6,10,9,.78), transparent); display: grid; }
+.tile .cap b { font-family: var(--display); font-weight: 600; font-size: 17px; line-height: 1.4; }
+.tile .cap span { font-size: 12px; color: #f0d595; }
+@keyframes rise { from { opacity: .001; transform: translateY(14px); } }
+
+.empty { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; padding: 64px 22px; text-align: center; display: grid; gap: 10px; justify-items: center; background: var(--surface); }
+.empty h3 { font-family: var(--display); font-weight: 600; font-size: 26px; margin: 0; }
+.empty p { color: var(--muted); margin: 0; max-width: 48ch; }
+
+/* contact */
+.contact { background: var(--emerald); color: #f4efe2; position: relative; overflow: hidden; }
+.contact .pattern { background: #f0d595; opacity: .12; }
+.contact .wrap { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 26px; align-items: center; padding-block: clamp(40px, 6vw, 70px); }
+.contact h2 { font-family: var(--brand); font-weight: 700; font-size: clamp(36px, 6vw, 60px); line-height: 1.3; margin: 0; }
+.contact p { margin: 6px 0 0; opacity: .85; }
+.contact .lines { display: grid; gap: 4px; margin-top: 14px; font-size: 15px; }
+.contact .lines span { display: flex; gap: 8px; align-items: center; }
+.contact .ltr { direction: ltr; unicode-bidi: isolate; font-variant-numeric: tabular-nums; }
+.contact .btn { background: rgba(255,255,255,.1); color: #fff; border-color: rgba(255,255,255,.25); }
+.contact .btn.gold { background: linear-gradient(135deg, #d9b56a, #f0d595); color: #1a1407; }
+.contact .cta { margin: 0; }
+@media (max-width: 760px) { .contact .wrap { grid-template-columns: 1fr; text-align: center; } .contact .lines span { justify-content: center; } .contact .cta { justify-content: center; } }
+
+footer { padding-block: 26px calc(26px + env(safe-area-inset-bottom, 0px)); color: var(--muted); font-size: 13px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: center; }
+.linkish { background: none; border: 0; padding: 4px; color: var(--muted); text-decoration: underline; text-underline-offset: 4px; font-size: 13px; }
+.linkish:hover { color: var(--gold); }
+
+/* owner bar */
+.owner { position: fixed; z-index: 25; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); display: flex; gap: 6px; padding: 6px; border-radius: 999px; background: var(--ink); color: var(--bg); box-shadow: 0 18px 40px -16px rgba(0,0,0,.5); max-width: calc(100vw - 24px); overflow-x: auto; }
+.owner button { border: 0; background: transparent; color: inherit; padding: 9px 16px; border-radius: 999px; white-space: nowrap; font-size: 14px; }
+.owner button.go { background: linear-gradient(135deg, var(--gold), var(--gold-2)); color: var(--on-gold); font-weight: 600; }
+.owner button:hover { background: color-mix(in srgb, var(--bg) 15%, transparent); }
+.owner button.go:hover { filter: brightness(1.05); }
+
+/* dialogs */
+dialog { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 18px; padding: 0; width: min(560px, calc(100vw - 28px)); max-height: calc(100dvh - 28px); box-shadow: var(--shadow); }
+dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
+.panel { padding: 26px; display: grid; gap: 16px; }
+.panel h2 { font-family: var(--display); font-weight: 700; font-size: 24px; margin: 0; }
+.panel p { margin: 0; color: var(--muted); font-size: 14px; }
+.field { display: grid; gap: 6px; }
+.field label { font-size: 13px; color: var(--muted); font-weight: 500; }
+.field input, .field textarea { width: 100%; border: 1px solid var(--line); background: var(--bg); border-radius: 10px; padding: 11px 14px; font-weight: 400; }
+.field input:focus, .field textarea:focus { border-color: var(--gold); outline: none; }
+.field textarea { min-height: 80px; resize: vertical; }
+.ltr-in { direction: ltr; text-align: left; }
+.drop { border: 1.5px dashed var(--line); border-radius: 14px; padding: 26px; text-align: center; color: var(--muted); display: grid; gap: 8px; justify-items: center; }
+.drop.over { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 10%, transparent); }
+.thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(74px, 1fr)); gap: 8px; }
+.thumbs img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; }
+.row { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+.msg { font-size: 13px; color: var(--muted); min-height: 1.4em; }
+.msg.err { color: #c0442f; }
+.confirm { background: color-mix(in srgb, #c0442f 10%, transparent); border-radius: 10px; padding: 10px 12px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: space-between; font-size: 14px; }
+.steps { margin: 0; padding-inline-start: 20px; color: var(--muted); font-size: 14px; display: grid; gap: 6px; }
+
+/* lightbox */
+.lb { position: fixed; inset: 0; z-index: 50; background: var(--scrim); color: #f2eee3; display: grid; grid-template-rows: auto 1fr auto;
+  padding: calc(env(safe-area-inset-top, 0px) + 12px) max(14px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 16px) max(14px, env(safe-area-inset-left, 0px)); }
+.lb-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.lb-count { font-variant-numeric: tabular-nums; opacity: .7; font-size: 13px; }
+.lb-stage { position: relative; display: grid; place-items: center; min-height: 0; }
+.lb-stage img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 4px; }
+.lb-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 50px; height: 50px; border-radius: 50%; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.08); color: #fff; display: grid; place-items: center; }
+.lb-nav:hover { background: rgba(255,255,255,.2); }
+.lb-nav svg { width: 22px; height: 22px; }
+.lb-prev { right: 6px; } .lb-next { left: 6px; }
+.lb-info { max-width: 760px; margin: 0 auto; text-align: center; display: grid; gap: 4px; padding-top: 12px; justify-items: center; }
+.lb-info .cat { color: #f0d595; font-size: 13px; }
+.lb-info h3 { font-family: var(--display); font-weight: 600; font-size: 22px; margin: 0; }
+.lb-info p { margin: 0; opacity: .8; font-size: 14px; }
+.lb-info .btn { margin-top: 8px; }
+.ghost { border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.06); color: #fff; padding: 7px 16px; border-radius: 999px; font-size: 14px; }
+.lb-tools { display: flex; gap: 8px; }
+
+.toast { position: fixed; z-index: 60; top: calc(env(safe-area-inset-top, 0px) + 70px); left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 20px; border-radius: 999px; font-size: 14px; box-shadow: var(--shadow); }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
+@media (max-width: 520px) { .wall { columns: 2 150px; column-gap: 10px; } .tile { margin-bottom: 10px; } .tile .cap { padding: 30px 10px 10px; } .tile .cap b { font-size: 14px; } .tile .cap span { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="bar gutter">
+  <div class="wrap">
+    <a class="mark" href="#top"><img src="icon-192.png" alt=""><span id="barName">ديكورات محمد الخفاجي</span></a>
+    <nav>
+      <a class="navlink" href="#designs">التصاميم</a>
+      <a class="navlink" href="#contact">تواصل</a>
+      <button class="round" id="installBtn" type="button" title="تثبيت التطبيق" aria-label="تثبيت التطبيق" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+      </button>
+      <button class="round" id="themeBtn" type="button" title="الوضع الليلي / النهاري" aria-label="تبديل الوضع الليلي والنهاري">
+        <svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+        <svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M2 12h2.2M19.8 12H22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero gutter">
+    <div class="pattern" aria-hidden="true"></div>
+    <div class="wrap">
+      <div>
+        <div class="eyebrow"><span>أسقف جبس بورد</span><span>جدران وخلفيات</span><span>واجهات</span><span>تصميم وتنفيذ</span></div>
+        <h1 class="brand" id="heroName">ديكورات <em>محمد الخفاجي</em></h1>
+        <p class="lede" id="heroTag">نحوّل الجدران والأسقف إلى قطع فنية. تصفّح أعمالنا، واختر التصميم الذي يناسب بيتك، وأرسل لنا رقمه.</p>
+        <div class="cta">
+          <a class="btn gold" href="#designs">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+            تصفّح التصاميم
+          </a>
+          <a class="btn" id="heroWa" href="#contact" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.4z"/><path d="M9 9.5c.3 2.2 2.3 4.4 5 5.2l1.3-1.3 2 1-.6 1.8c-4.2.3-8.6-3.9-8.4-8.2l1.8-.6 1 2z"/></svg>
+            اطلب عبر واتساب
+          </a>
+        </div>
+        <div class="facts">
+          <div><b id="factDesigns">0</b><span>تصميم منفّذ</span></div>
+          <div><b id="factCats">0</b><span>أقسام</span></div>        </div>
+      </div>
+      <figure class="niche" style="margin:0">
+        <div class="arch" id="arch">
+          <div class="pattern" aria-hidden="true"></div>
+          <div class="arch-empty" id="archEmpty"><div><b>أحدث أعمالنا</b>ستظهر هنا آخر صورة تُضاف للمعرض</div></div>
+          <img id="archImg" alt="" hidden>
+        </div>
+        <figcaption class="niche-tag" id="archTag" hidden><b id="archTitle"></b><span id="archNum"></span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section gutter" id="designs">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <h2>معرض التصاميم</h2>
+          <p id="status">كل تصميم له رقم. أرسل الرقم لنا ونعطيك التفاصيل والسعر.</p>
+        </div>
+      </div>
+      <nav class="rail" id="rail" aria-label="أقسام التصاميم"></nav>
+      <div class="wall" id="wall"></div>
+      <div class="empty" id="empty" hidden>
+        <div class="pattern" aria-hidden="true"></div>
+        <h3 id="emptyTitle">المعرض قيد التجهيز</h3>
+        <p id="emptyText">نرفع صور أعمالنا قريباً. تواصل معنا الآن لمشاهدة نماذج مباشرة.</p>
+        <button class="btn gold" id="emptyAdd" type="button" hidden>أضف أول تصميم</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact gutter" id="contact">
+    <div class="pattern" aria-hidden="true"></div>
+    <div class="wrap">
+      <div>
+        <h2>نصمّم مساحتك القادمة</h2>
+        <p>أرسل لنا رقم التصميم الذي أعجبك، أو صورة مكانك، ونتفق على التفاصيل.</p>
+        <div class="lines">
+          <span id="cPhoneLine" hidden>الهاتف: <b class="ltr" id="cPhone"></b></span>
+          <span id="cAddrLine" hidden>العنوان: <b id="cAddr"></b></span>
+        </div>
+      </div>
+      <div class="cta">
+        <a class="btn gold" id="cWa" href="#" target="_blank" rel="noopener" hidden>واتساب</a>
+        <a class="btn" id="cCall" href="#" hidden>اتصال</a>
+        <a class="btn" id="cInsta" href="#" target="_blank" rel="noopener" hidden>انستغرام</a>
+        <button class="btn" id="cCopy" type="button" hidden>نسخ الرقم</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="gutter">
+  <div class="wrap">
+    <span>© <span id="year"></span> <span id="footName">ديكورات محمد الخفاجي</span></span>
+    <span class="row" style="gap:14px">
+      <button class="linkish" id="installLink" type="button">تثبيت التطبيق على الهاتف</button>
+      <button class="linkish" id="ownerLink" type="button">دخول صاحب المحل</button>
+    </span>
+  </div>
+</footer>
+
+<div class="owner" id="ownerBar" hidden>
+  <button class="go" id="addBtn" type="button">+ إضافة صورة</button>
+  <button id="infoBtn" type="button">معلومات المحل</button>
+  <button id="logoutBtn" type="button">خروج</button>
+</div>
+
+<!-- login -->
+<dialog id="loginDlg">
+  <form class="panel" id="loginForm" method="dialog">
+    <h2>دخول صاحب المحل</h2>
+    <p>ادخل بالبريد وكلمة المرور التي أنشأتها في Supabase.</p>
+    <div class="field"><label for="lEmail">البريد الإلكتروني</label><input id="lEmail" type="email" class="ltr-in" autocomplete="username" required></div>
+    <div class="field"><label for="lPass">كلمة المرور</label><input id="lPass" type="password" class="ltr-in" autocomplete="current-password" required></div>
+    <div class="msg" id="loginMsg"></div>
+    <div class="row"><button class="btn small" type="button" data-close>إلغاء</button><button class="btn gold small" type="submit">دخول</button></div>
+  </form>
+</dialog>
+
+<!-- add -->
+<dialog id="addDlg">
+  <form class="panel" id="addForm" method="dialog">
+    <h2>إضافة صور جديدة</h2>
+    <label class="drop" id="drop" for="files">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+      <span>اضغط لاختيار الصور أو اسحبها هنا</span>
+      <span style="font-size:12px">يمكن اختيار عدة صور. تُصغّر تلقائياً لتفتح بسرعة عند الزبون.</span>
+    </label>
+    <input type="file" id="files" accept="image/*" multiple hidden>
+    <div class="thumbs" id="thumbs"></div>
+    <div class="field"><label for="cat">القسم</label><input id="cat" list="catList" placeholder="مثال: أسقف جبس بورد" required><datalist id="catList"></datalist></div>
+    <div class="field"><label for="title">اسم التصميم (اختياري)</label><input id="title" placeholder="مثال: سقف صالة بإنارة مخفية"></div>
+    <div class="field"><label for="note">وصف أو سعر تقريبي (اختياري)</label><textarea id="note" placeholder="الخامات، المقاسات، مدة التنفيذ…"></textarea></div>
+    <div class="msg" id="addMsg"></div>
+    <div class="row"><button class="btn small" type="button" data-close>إلغاء</button><button class="btn gold small" type="submit" id="addSubmit">رفع الصور</button></div>
+  </form>
+</dialog>
+
+<!-- edit -->
+<dialog id="editDlg">
+  <form class="panel" id="editForm" method="dialog">
+    <h2>تعديل التصميم <span id="eNum" style="color:var(--gold)"></span></h2>
+    <div class="field"><label for="eCat">القسم</label><input id="eCat" list="catList" required></div>
+    <div class="field"><label for="eTitle">الاسم</label><input id="eTitle"></div>
+    <div class="field"><label for="eNote">الوصف</label><textarea id="eNote"></textarea></div>
+    <div class="confirm" id="delConfirm" hidden>
+      <span>سيُحذف التصميم وصورته نهائياً من الموقع.</span>
+      <span class="row"><button class="btn small" type="button" id="delNo">تراجع</button><button class="btn small danger" type="button" id="delYes">نعم، احذف</button></span>
+    </div>
+    <div class="msg" id="editMsg"></div>
+    <div class="row" style="justify-content:space-between">
+      <button class="btn small danger" type="button" id="delBtn">حذف</button>
+      <span class="row"><button class="btn small" type="button" data-close>إلغاء</button><button class="btn gold small" type="submit">حفظ</button></span>
+    </div>
+  </form>
+</dialog>
+
+<!-- info -->
+<dialog id="infoDlg">
+  <form class="panel" id="infoForm" method="dialog">
+    <h2>معلومات المحل</h2>
+    <div class="field"><label for="iName">الاسم</label><input id="iName" required></div>
+    <div class="field"><label for="iTag">نبذة قصيرة</label><textarea id="iTag"></textarea></div>
+    <div class="field"><label for="iPhone">رقم الهاتف</label><input id="iPhone" class="ltr-in" inputmode="tel" placeholder="07xx xxx xxxx"></div>
+    <div class="field"><label for="iWa">رقم واتساب (إن كان مختلفاً)</label><input id="iWa" class="ltr-in" inputmode="tel" placeholder="07xx xxx xxxx"></div>
+    <div class="field"><label for="iAddr">العنوان</label><input id="iAddr" placeholder="مثال: الموصل، حي الزهور"></div>
+    <div class="field"><label for="iInsta">حساب انستغرام</label><input id="iInsta" class="ltr-in" placeholder="username"></div>
+    <div class="msg" id="infoMsg"></div>
+    <div class="row"><button class="btn small" type="button" data-close>إلغاء</button><button class="btn gold small" type="submit">حفظ</button></div>
+  </form>
+</dialog>
+
+<!-- install help -->
+<dialog id="installDlg">
+  <div class="panel">
+    <h2>تثبيت التطبيق</h2>
+    <p id="installIntro">ضع التطبيق على الشاشة الرئيسية ليفتح مثل أي تطبيق.</p>
+    <ol class="steps" id="installSteps"></ol>
+    <div class="row"><button class="btn gold small" type="button" data-close>تم</button></div>
+  </div>
+</dialog>
+
+<!-- lightbox -->
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="عرض التصميم">
+  <div class="lb-top">
+    <span class="lb-count" id="lbCount"></span>
+    <span class="lb-tools">
+      <button class="ghost" id="lbEdit" type="button" hidden>تعديل</button>
+      <button class="ghost" id="lbClose" type="button">إغلاق ✕</button>
+    </span>
+  </div>
+  <div class="lb-stage">
+    <img id="lbImg" alt="">
+    <button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="السابق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>
+    <button class="lb-nav lb-next" id="lbNext" type="button" aria-label="التالي"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+  </div>
+  <div class="lb-info">
+    <span class="cat" id="lbCat"></span>
+    <h3 id="lbTitle"></h3>
+    <p id="lbNote"></p>
+    <a class="btn gold small" id="lbWa" href="#" target="_blank" rel="noopener" hidden>اسأل عن هذا التصميم</a>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const CFG = window.DECOR_CONFIG || {};
+  const READY = !!(CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY && window.supabase);
+  const sb = READY ? window.supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY) : null;
+  const BUCKET = "designs";
+  const DEFAULT_CATS = ["أسقف جبس بورد", "صالات", "غرف نوم", "مطابخ", "جدران وخلفيات تلفزيون", "واجهات", "حمامات", "مداخل وممرات"];
+  const AR = n => Number(n).toLocaleString("ar-IQ");
+  const state = { designs: [], filter: "الكل", view: [], idx: 0, admin: false, editing: null, pending: [], info: {} };
+
+  const imgUrl = (d, size) => CFG.SUPABASE_URL + "/storage/v1/object/public/" + BUCKET + "/" + size + "/" + d.image + ".jpg";
+  const label = d => d.title || ("تصميم " + AR(d.num));
+
+  function toast(t) { const el = $("toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => el.hidden = true, 2600); }
+  document.querySelectorAll("[data-close]").forEach(b => b.onclick = () => b.closest("dialog").close());
+  $("year").textContent = AR(new Date().getFullYear()).replace(/٬/g, "");
+
+  // ---------- theme ----------
+  const mql = matchMedia("(prefers-color-scheme: dark)");
+  const isDark = () => { const t = document.documentElement.dataset.theme; return t ? t === "dark" : mql.matches; };
+  const syncThemeColor = () => document.querySelector('meta[name="theme-color"]').content = isDark() ? "#0b1412" : "#f2f2ee";
+  $("themeBtn").onclick = () => {
+    const next = isDark() ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem("theme", next); } catch (e) {}
+    syncThemeColor();
+  };
+  mql.addEventListener("change", syncThemeColor); syncThemeColor();
+
+  // ---------- phone helpers ----------
+  const digits = s => (s || "").replace(/[^\d+]/g, "").replace(/^\+/, "");
+  const waNumber = s => { let d = digits(s); if (d.startsWith("00")) d = d.slice(2); if (d.startsWith("0")) d = "964" + d.slice(1); return d; };
+  const waLink = (num, text) => "https://wa.me/" + waNumber(num) + (text ? "?text=" + encodeURIComponent(text) : "");
+
+  function applyInfo(info) {
+    state.info = info || {};
+    const name = state.info.name || "ديكورات محمد الخفاجي";
+    document.title = name;
+    $("barName").textContent = name; $("footName").textContent = name;
+    const parts = name.trim().split(/\s+/);
+    const h = $("heroName"); h.textContent = "";
+    if (parts.length > 1) { h.append(parts[0] + " "); const em = document.createElement("em"); em.textContent = parts.slice(1).join(" "); h.appendChild(em); }
+    else h.textContent = name;
+    if (state.info.tag) $("heroTag").textContent = state.info.tag;
+    const phone = state.info.phone, wa = state.info.whatsapp || state.info.phone;
+    $("cPhone").textContent = phone || ""; $("cPhoneLine").hidden = !phone;
+    $("cAddr").textContent = state.info.address || ""; $("cAddrLine").hidden = !state.info.address;
+    $("cCall").hidden = !phone; if (phone) $("cCall").href = "tel:" + digits(phone);
+    $("cCopy").hidden = !phone;
+    $("cWa").hidden = $("heroWa").hidden = !wa;
+    if (wa) { $("cWa").href = $("heroWa").href = waLink(wa, "مرحباً، أريد الاستفسار عن الديكورات"); $("heroWa").target = "_blank"; $("heroWa").rel = "noopener"; }
+    const ig = (state.info.instagram || "").replace(/^@/, "").trim();
+    $("cInsta").hidden = !ig; if (ig) $("cInsta").href = "https://instagram.com/" + encodeURIComponent(ig);
+  }
+  $("cCopy").onclick = async () => {
+    try { await navigator.clipboard.writeText(state.info.phone); toast("تم نسخ الرقم"); }
+    catch { const r = document.createRange(); r.selectNodeContents($("cPhone")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast("الرقم محدد، انسخه"); }
+  };
+
+  // ---------- render ----------
+  function renderRail() {
+    const counts = new Map();
+    state.designs.forEach(d => counts.set(d.category, (counts.get(d.category) || 0) + 1));
+    if (!counts.has(state.filter)) state.filter = "الكل";
+    const rail = $("rail"); rail.textContent = "";
+    for (const [name, n] of [["الكل", state.designs.length], ...counts.entries()]) {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.setAttribute("aria-pressed", String(name === state.filter)); b.textContent = name;
+      const s = document.createElement("span"); s.className = "n"; s.textContent = AR(n); b.appendChild(s);
+      b.onclick = () => { state.filter = name; render(); };
+      rail.appendChild(b);
+    }
+    rail.hidden = state.designs.length === 0;
+    $("factDesigns").textContent = AR(state.designs.length);
+    $("factCats").textContent = AR(counts.size);
+    document.querySelector(".facts").hidden = state.designs.length === 0;
+    const dl = $("catList"); dl.textContent = "";
+    new Set([...counts.keys(), ...DEFAULT_CATS]).forEach(c => { const o = document.createElement("option"); o.value = c; dl.appendChild(o); });
+  }
+  function renderHero() {
+    const d = state.designs[0];
+    $("archEmpty").hidden = !!d; $("archImg").hidden = !d; $("archTag").hidden = !d;
+    if (d) {
+      const img = $("archImg");
+      if (img.dataset.id !== d.id) { img.dataset.id = d.id; img.src = imgUrl(d, "full"); img.alt = label(d); }
+      $("archTitle").textContent = label(d); $("archNum").textContent = "رقم " + AR(d.num);
+    }
+  }
+  function renderWall() {
+    state.view = state.filter === "الكل" ? state.designs : state.designs.filter(d => d.category === state.filter);
+    const wall = $("wall"); wall.textContent = "";
+    state.view.forEach((d, i) => {
+      const t = document.createElement("button"); t.type = "button"; t.className = "tile";
+      t.style.animationDelay = Math.min(i, 12) * 50 + "ms";
+      const img = document.createElement("img"); img.loading = "lazy"; img.decoding = "async"; img.src = imgUrl(d, "thumb"); img.alt = label(d);
+      const num = document.createElement("span"); num.className = "num"; num.textContent = "رقم " + AR(d.num);
+      const cap = document.createElement("span"); cap.className = "cap";
+      const b = document.createElement("b"); b.textContent = label(d);
+      const s = document.createElement("span"); s.textContent = d.category;
+      cap.append(b, s); t.append(img, num, cap); t.onclick = () => openLb(i);
+      wall.appendChild(t);
+    });
+    const none = state.designs.length === 0;
+    $("empty").hidden = !none; wall.hidden = none;
+    if (none) {
+      $("emptyTitle").textContent = !READY ? "الموقع جاهز، بانتظار ربطه بقاعدة البيانات" : state.admin ? "المعرض جاهز لصورك" : "المعرض قيد التجهيز";
+      $("emptyText").textContent = !READY ? "ضع رابط ومفتاح Supabase في ملف config.js لتظهر الصور وتتمكن من الإضافة."
+        : state.admin ? "اضغط «إضافة صورة» وارفع صور أعمالك. تظهر فوراً لكل من يفتح الموقع." : "نرفع صور أعمالنا قريباً. تواصل معنا الآن لمشاهدة نماذج مباشرة.";
+      $("emptyAdd").hidden = !state.admin;
+    }
+  }
+  function render() { renderRail(); renderHero(); renderWall(); $("ownerBar").hidden = !state.admin; $("ownerLink").hidden = state.admin; }
+
+  // ---------- data ----------
+  async function load() {
+    if (!READY) { render(); return; }
+    const [d, s] = await Promise.all([
+      sb.from("designs").select("*").order("created_at", { ascending: false }),
+      sb.from("settings").select("*").eq("id", 1).maybeSingle()
+    ]);
+    if (d.error) { $("status").textContent = "تعذّر تحميل التصاميم. تحقق من الاتصال بالإنترنت."; }
+    else state.designs = d.data || [];
+    if (!s.error && s.data) applyInfo(s.data);
+    render();
+    if (!$("lb").hidden) showLb();
+  }
+
+  // ---------- lightbox ----------
+  function openLb(i) { state.idx = i; showLb(); $("lb").hidden = false; document.body.style.overflow = "hidden"; $("lbClose").focus(); }
+  function closeLb() { $("lb").hidden = true; document.body.style.overflow = ""; }
+  function showLb() {
+    const v = state.view; if (!v.length) return closeLb();
+    state.idx = (state.idx + v.length) % v.length;
+    const d = v[state.idx];
+    $("lbImg").src = imgUrl(d, "full"); $("lbImg").alt = label(d);
+    $("lbTitle").textContent = label(d); $("lbCat").textContent = d.category + " · رقم " + AR(d.num); $("lbNote").textContent = d.note || "";
+    $("lbCount").textContent = AR(state.idx + 1) + " / " + AR(v.length);
+    $("lbEdit").hidden = !state.admin;
+    $("lbPrev").hidden = $("lbNext").hidden = v.length < 2;
+    const wa = state.info.whatsapp || state.info.phone;
+    $("lbWa").hidden = !wa;
+    if (wa) $("lbWa").href = waLink(wa, "مرحباً، أريد الاستفسار عن التصميم رقم " + d.num + (d.title ? " (" + d.title + ")" : ""));
+    const nx = v[(state.idx + 1) % v.length]; if (nx) new Image().src = imgUrl(nx, "full");
+  }
+  $("lbClose").onclick = closeLb;
+  $("lbNext").onclick = () => { state.idx++; showLb(); };
+  $("lbPrev").onclick = () => { state.idx--; showLb(); };
+  $("lb").addEventListener("click", e => { if (e.target.classList.contains("lb-stage")) closeLb(); });
+  document.addEventListener("keydown", e => {
+    if ($("lb").hidden) return;
+    if (e.key === "Escape") closeLb();
+    if (e.key === "ArrowLeft") { state.idx++; showLb(); }
+    if (e.key === "ArrowRight") { state.idx--; showLb(); }
+  });
+  let tx0 = null;
+  $("lb").addEventListener("touchstart", e => { tx0 = e.touches[0].clientX; }, { passive: true });
+  $("lb").addEventListener("touchend", e => {
+    if (tx0 === null) return; const dx = e.changedTouches[0].clientX - tx0; tx0 = null;
+    if (Math.abs(dx) > 50) { state.idx += dx > 0 ? 1 : -1; showLb(); }
+  });
+
+  // ---------- owner auth ----------
+  function openLogin() {
+    if (!READY) { toast("اربط الموقع بـ Supabase أولاً (ملف config.js)"); return; }
+    $("loginMsg").textContent = ""; $("loginDlg").showModal();
+  }
+  $("ownerLink").onclick = openLogin;
+  $("loginForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const m = $("loginMsg"); m.className = "msg"; m.textContent = "جارٍ الدخول…";
+    const { error } = await sb.auth.signInWithPassword({ email: $("lEmail").value.trim(), password: $("lPass").value });
+    if (error) { m.className = "msg err"; m.textContent = "البريد أو كلمة المرور غير صحيحة."; return; }
+    $("lPass").value = ""; $("loginDlg").close(); toast("أهلاً بك، يمكنك الآن إضافة الصور");
+  });
+  $("logoutBtn").onclick = async () => { await sb.auth.signOut(); toast("تم الخروج"); };
+  if (READY) {
+    sb.auth.onAuthStateChange((_e, session) => { state.admin = !!session; render(); if (!$("lb").hidden) showLb(); });
+  }
+  if (location.hash === "#admin") setTimeout(openLogin, 400);
+
+  // ---------- images ----------
+  async function resize(file, max, q) {
+    const bmp = await createImageBitmap(file);
+    const s = Math.min(1, max / Math.max(bmp.width, bmp.height));
+    const c = document.createElement("canvas"); c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s);
+    const g = c.getContext("2d"); g.fillStyle = "#ffffff"; g.fillRect(0, 0, c.width, c.height); g.drawImage(bmp, 0, 0, c.width, c.height);
+    return new Promise((res, rej) => c.toBlob(b => b ? res(b) : rej(new Error("encode")), "image/jpeg", q));
+  }
+
+  // ---------- add ----------
+  function setPending(list) {
+    state.pending = [...list].filter(f => f.type.startsWith("image/"));
+    const th = $("thumbs"); th.textContent = "";
+    state.pending.forEach(f => { const i = document.createElement("img"); i.src = URL.createObjectURL(f); i.alt = ""; th.appendChild(i); });
+    $("addMsg").className = "msg"; $("addMsg").textContent = state.pending.length ? AR(state.pending.length) + " صورة جاهزة للرفع" : "";
+  }
+  function openAdd() {
+    setPending([]); $("files").value = ""; $("title").value = ""; $("note").value = "";
+    $("cat").value = state.filter !== "الكل" ? state.filter : "";
+    $("addSubmit").disabled = false; $("addDlg").showModal();
+  }
+  $("addBtn").onclick = openAdd; $("emptyAdd").onclick = openAdd;
+  $("files").onchange = e => setPending(e.target.files);
+  const drop = $("drop");
+  ["dragenter", "dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("over"); }));
+  ["dragleave", "drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("over"); }));
+  drop.addEventListener("drop", e => setPending(e.dataTransfer.files));
+
+  $("addForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const msg = $("addMsg");
+    if (!state.pending.length) { msg.className = "msg err"; msg.textContent = "اختر صورة واحدة على الأقل."; return; }
+    const category = $("cat").value.trim(), title = $("title").value.trim(), note = $("note").value.trim();
+    $("addSubmit").disabled = true;
+    let done = 0, failed = 0;
+    for (const f of state.pending) {
+      msg.className = "msg"; msg.textContent = "جارٍ رفع " + AR(done + failed + 1) + " من " + AR(state.pending.length) + "…";
+      try {
+        const id = crypto.randomUUID();
+        const [full, thumb] = await Promise.all([resize(f, 2000, .86), resize(f, 800, .8)]);
+        const opt = { contentType: "image/jpeg", cacheControl: "31536000", upsert: false };
+        const u1 = await sb.storage.from(BUCKET).upload("full/" + id + ".jpg", full, opt); if (u1.error) throw u1.error;
+        const u2 = await sb.storage.from(BUCKET).upload("thumb/" + id + ".jpg", thumb, opt); if (u2.error) throw u2.error;
+        const t = state.pending.length > 1 && title ? title + " " + (done + 1) : title;
+        const ins = await sb.from("designs").insert({ category, title: t, note, image: id }); if (ins.error) throw ins.error;
+        done++;
+      } catch (err) { console.error(err); failed++; }
+    }
+    $("addSubmit").disabled = false;
+    await load();
+    if (failed) { msg.className = "msg err"; msg.textContent = "رُفعت " + AR(done) + " صورة وتعذّر رفع " + AR(failed) + ". تحقق من الإنترنت وحاول مجدداً."; }
+    else { $("addDlg").close(); state.filter = category; render(); toast("تمت إضافة " + AR(done) + " صورة"); document.getElementById("designs").scrollIntoView(); }
+  });
+
+  // ---------- edit / delete ----------
+  $("lbEdit").onclick = () => {
+    const d = state.view[state.idx]; state.editing = d;
+    $("eNum").textContent = "رقم " + AR(d.num);
+    $("eCat").value = d.category; $("eTitle").value = d.title || ""; $("eNote").value = d.note || "";
+    $("delConfirm").hidden = true; $("editMsg").textContent = ""; $("editDlg").showModal();
+  };
+  $("editForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const { error } = await sb.from("designs").update({ category: $("eCat").value.trim(), title: $("eTitle").value.trim(), note: $("eNote").value.trim() }).eq("id", state.editing.id);
+    if (error) { $("editMsg").className = "msg err"; $("editMsg").textContent = "لم يُحفظ التعديل. حاول مجدداً."; return; }
+    $("editDlg").close(); toast("تم الحفظ"); load();
+  });
+  $("delBtn").onclick = () => { $("delConfirm").hidden = false; };
+  $("delNo").onclick = () => { $("delConfirm").hidden = true; };
+  $("delYes").onclick = async () => {
+    const d = state.editing;
+    const { error } = await sb.from("designs").delete().eq("id", d.id);
+    if (error) { $("editMsg").className = "msg err"; $("editMsg").textContent = "تعذّر الحذف. حاول مجدداً."; return; }
+    sb.storage.from(BUCKET).remove(["full/" + d.image + ".jpg", "thumb/" + d.image + ".jpg"]);
+    $("editDlg").close(); closeLb(); toast("تم الحذف"); load();
+  };
+
+  // ---------- shop info ----------
+  $("infoBtn").onclick = () => {
+    const i = state.info;
+    $("iName").value = i.name || "ديكورات محمد الخفاجي"; $("iTag").value = i.tag || "";
+    $("iPhone").value = i.phone || ""; $("iWa").value = i.whatsapp || ""; $("iAddr").value = i.address || ""; $("iInsta").value = i.instagram || "";
+    $("infoMsg").textContent = ""; $("infoDlg").showModal();
+  };
+  $("infoForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const info = { id: 1, name: $("iName").value.trim(), tag: $("iTag").value.trim(), phone: $("iPhone").value.trim(), whatsapp: $("iWa").value.trim(), address: $("iAddr").value.trim(), instagram: $("iInsta").value.trim() };
+    const { error } = await sb.from("settings").update(info).eq("id", 1);
+    if (error) { $("infoMsg").className = "msg err"; $("infoMsg").textContent = "لم تُحفظ المعلومات. حاول مجدداً."; return; }
+    applyInfo(info); $("infoDlg").close(); toast("تم حفظ معلومات المحل");
+  });
+
+  // ---------- install (PWA) ----------
+  let deferred = null;
+  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  if (standalone) $("installLink").hidden = true;
+  addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferred = e; $("installBtn").hidden = false; });
+  addEventListener("appinstalled", () => { deferred = null; $("installBtn").hidden = true; $("installLink").hidden = true; toast("تم تثبيت التطبيق"); });
+  async function install() {
+    if (deferred) { deferred.prompt(); await deferred.userChoice; deferred = null; $("installBtn").hidden = true; return; }
+    const steps = $("installSteps"); steps.textContent = "";
+    const list = isIOS
+      ? ["افتح الموقع في متصفح Safari.", "اضغط زر المشاركة (مربع وسهم للأعلى) أسفل الشاشة.", "اختر «إضافة إلى الشاشة الرئيسية» ثم «إضافة»."]
+      : ["افتح الموقع في متصفح Chrome.", "اضغط قائمة النقاط الثلاث ⋮ أعلى الشاشة.", "اختر «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية»."];
+    list.forEach(t => { const li = document.createElement("li"); li.textContent = t; steps.appendChild(li); });
+    $("installDlg").showModal();
+  }
+  $("installBtn").onclick = install; $("installLink").onclick = install;
+  if ("serviceWorker" in navigator && location.protocol !== "file:") navigator.serviceWorker.register("sw.js").catch(() => {});
+
+  applyInfo({});
+  load();
+})();
+</script>
+</body>
+</html>
