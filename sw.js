@@ -1,5 +1,5 @@
 // Offline shell for the installed app. Bump VERSION after changing site files.
-const VERSION = "v7";
+const VERSION = "v8";
 const SHELL = `shell-${VERSION}`;
 const RUNTIME = `runtime-${VERSION}`;
 const SHELL_FILES = ["./", "./index.html", "./config.js", "./manifest.webmanifest",
@@ -33,7 +33,8 @@ self.addEventListener("fetch", e => {
     || url.host === "fonts.googleapis.com" || url.host === "fonts.gstatic.com" || url.host === "cdn.jsdelivr.net";
   if (cacheable) {
     e.respondWith(caches.open(RUNTIME).then(c => c.match(req).then(hit => hit || fetch(req).then(res => {
-      if (res.ok || res.type === "opaque") c.put(req, res.clone());
+      // only real successes are kept: an opaque or failed response could hide an error forever
+      if (res.ok) c.put(req, res.clone());
       return res;
     }))));
   }

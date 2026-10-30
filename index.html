@@ -128,8 +128,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .arch-nav:hover { background: rgba(8,14,12,.7); }
 .arch-nav svg { width: 20px; height: 20px; }
 .arch-prev { right: 10px; } .arch-next { left: 10px; }
-.tag-text { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex: 1; min-width: 0; }
-.tag-text b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tag-text { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 10px; flex: 1; min-width: 0; line-height: 1.5; }
+.tag-text b { min-width: 0; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .zoom-btn { flex: none; width: 34px; height: 34px; border-radius: 50%; border: 0; background: linear-gradient(135deg, var(--gold), var(--gold-2)); color: var(--on-gold); display: grid; place-items: center; padding: 0; }
 .zoom-btn svg { width: 18px; height: 18px; }
 .arch .pattern { opacity: .22; }
@@ -168,6 +168,10 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .tile-del svg { width: 18px; height: 18px; }
 .tile { margin: 0; position: relative; display: block; width: 100%; padding: 0; border: 0; background: var(--bg-2); border-radius: 6px; overflow: hidden; text-align: start; color: #fff; animation: rise .6s ease both; }
 .tile img { display: block; width: 100%; height: auto; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+/* until a photo arrives its tile keeps a real height, so lazy loading fetches only what is on screen */
+.tile img:not(.loaded) { aspect-ratio: 4 / 5; }
+.tile.broken img { opacity: 0; }
+.tile.broken::before { content: "تعذّر تحميل الصورة · اضغط لعرضها"; position: absolute; inset: 0; display: grid; place-items: center; padding: 16px; text-align: center; color: var(--muted); font-size: 13px; }
 .tile::after { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(255,255,255,.0); border-radius: 3px; transition: border-color .35s ease; pointer-events: none; }
 .tile:hover::after { border-color: rgba(240, 213, 149, .8); }
 .tile:hover img { transform: scale(1.05); }
@@ -515,8 +519,8 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
 <div class="toast" id="toast" hidden></div>
 
 <script src="config.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js" crossorigin="anonymous"></script>
 <script>
 (() => {
   const $ = id => document.getElementById(id);
@@ -530,6 +534,21 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
 
   const imgUrl = (d, size) => CFG.SUPABASE_URL + "/storage/v1/object/public/" + BUCKET + "/" + size + "/" + d.image + ".jpg";
   const label = d => d.title || ("تصميم " + AR(d.num));
+  // Photos load over CORS with up to 4 spaced retries, so a dropped connection or a brief
+  // "too many requests" from storage no longer leaves a picture blank for good.
+  function setImg(img, url, done) {
+    let tries = 0;
+    img.dataset.want = url;
+    img.crossOrigin = "anonymous";
+    img.onload = () => { if (img.dataset.want === url && done) done(true); };
+    img.onerror = () => {
+      if (img.dataset.want !== url) return;
+      if (++tries <= 4) setTimeout(() => { if (img.dataset.want === url) img.src = url + "?retry=" + tries; }, 700 * 2 ** (tries - 1));
+      else if (done) done(false);
+    };
+    img.src = url;
+  }
+  const preload = url => { const p = new Image(); p.crossOrigin = "anonymous"; p.src = url; };
   const WA_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2a9.7 9.7 0 0 0-8.4 14.6L2.3 21.7l5-1.3A9.7 9.7 0 1 0 12 2.2zm0 17.7a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 19.9zm4.4-6c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.8 1c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a.9.9 0 0 0-.7.3 2.8 2.8 0 0 0-.9 2.1 4.9 4.9 0 0 0 1 2.6 11.2 11.2 0 0 0 4.3 3.8c1.6.7 2.2.7 3 .6.5-.1 1.4-.6 1.6-1.2.2-.6.2-1 .1-1.2l-.5-.2z"/></svg>';
   // one message used by every WhatsApp button: number, section, the photo itself and a link back to it
   const designWaLink = d => {
@@ -619,7 +638,9 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
     new Set([...counts.keys(), ...DEFAULT_CATS]).forEach(c => { const o = document.createElement("option"); o.value = c; dl.appendChild(o); });
   }
   // ---------- hero slideshow: crossfades through every design, one per second ----------
-  const slide = { i: 0, front: "slideA", timer: null, pauseUntil: 0, shownId: null, loading: false };
+  const slide = { i: 0, front: "slideA", timer: null, pauseUntil: 0, shownId: null, loading: false, visible: true };
+  // no downloads while the arch is scrolled out of view
+  if ("IntersectionObserver" in window) new IntersectionObserver(es => { slide.visible = es[0].isIntersecting; }).observe($("arch"));
   const SLIDE_MS = 1000;
   function showSlide(i) {
     const list = state.designs; if (!list.length) return;
@@ -631,14 +652,14 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
     const back = slide.front === "slideA" ? "slideB" : "slideA", img = $(back), old = $(slide.front);
     img.hidden = false; img.alt = label(d);
     const swap = () => { img.classList.add("on"); old.classList.remove("on"); slide.front = back; slide.loading = false; };
-    slide.loading = true; img.onload = swap; img.onerror = swap;
-    img.src = imgUrl(d, "thumb");
-    if (img.complete && img.naturalWidth) swap();
-    const nx = list[(slide.i + 1) % list.length]; if (nx) new Image().src = imgUrl(nx, "thumb");
+    slide.loading = true;
+    // a photo that still fails after retries is skipped instead of showing a blank arch
+    setImg(img, imgUrl(d, "thumb"), ok => { if (ok) swap(); else slide.loading = false; });
+    const nx = list[(slide.i + 1) % list.length]; if (nx) preload(imgUrl(nx, "thumb"));
   }
   function tickSlide() {
     // wait for the current picture to arrive on slow connections before moving on
-    if (document.hidden || slide.loading || Date.now() < slide.pauseUntil || state.designs.length < 2 || !$("lb").hidden) return;
+    if (document.hidden || !slide.visible || slide.loading || Date.now() < slide.pauseUntil || state.designs.length < 2 || !$("lb").hidden) return;
     showSlide(slide.i + 1);
   }
   function nudgeSlide(step) { slide.pauseUntil = Date.now() + 4000; showSlide(slide.i + step); }
@@ -675,7 +696,8 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
     state.view.forEach((d, i) => {
       const t = document.createElement("button"); t.type = "button"; t.className = "tile";
       t.style.animationDelay = Math.min(i, 12) * 50 + "ms";
-      const img = document.createElement("img"); img.loading = "lazy"; img.decoding = "async"; img.src = imgUrl(d, "thumb"); img.alt = label(d);
+      const img = document.createElement("img"); img.loading = "lazy"; img.decoding = "async"; img.alt = label(d);
+      setImg(img, imgUrl(d, "thumb"), ok => { img.classList.add("loaded"); t.classList.toggle("broken", !ok); });
       const num = document.createElement("span"); num.className = "num"; num.textContent = "رقم " + AR(d.num);
       const cap = document.createElement("span"); cap.className = "cap";
       const b = document.createElement("b"); b.textContent = label(d);
@@ -732,7 +754,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
     const v = state.view; if (!v.length) return closeLb();
     state.idx = (state.idx + v.length) % v.length;
     const d = v[state.idx];
-    $("lbImg").src = imgUrl(d, "full"); $("lbImg").alt = label(d);
+    setImg($("lbImg"), imgUrl(d, "full")); $("lbImg").alt = label(d);
     $("lbTitle").textContent = label(d); $("lbCat").textContent = d.category; $("lbNote").textContent = d.note || "";
     // the design's own number is unique across all sections, so customers can quote it
     $("lbCount").textContent = "تصميم رقم " + AR(d.num);
@@ -741,7 +763,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
     const wa = state.info.whatsapp || state.info.phone;
     $("lbWa").hidden = !wa;
     if (wa) $("lbWa").href = designWaLink(d);
-    const nx = v[(state.idx + 1) % v.length]; if (nx) new Image().src = imgUrl(nx, "full");
+    const nx = v[(state.idx + 1) % v.length]; if (nx) preload(imgUrl(nx, "full"));
   }
   $("lbClose").onclick = closeLb;
   $("lbNext").onclick = () => { state.idx++; showLb(); };
@@ -877,7 +899,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
   let deleting = null;
   function askDelete(d) {
     deleting = d;
-    $("delImg").src = imgUrl(d, "thumb"); $("delTitle").textContent = label(d);
+    setImg($("delImg"), imgUrl(d, "thumb")); $("delTitle").textContent = label(d);
     $("delMeta").textContent = d.category + " · رقم " + AR(d.num);
     $("delMsg").textContent = ""; $("delGo").disabled = false; $("delDlg").showModal();
   }
