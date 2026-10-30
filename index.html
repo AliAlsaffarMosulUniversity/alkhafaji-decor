@@ -122,11 +122,20 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .niche::before { content: ""; position: absolute; inset: -14px; border: 1px solid var(--gold); border-radius: 50% 50% 6px 6px / 37% 37% 6px 6px; opacity: .7; }
 .niche::after { content: ""; position: absolute; inset: -28px; border: 1px solid var(--gold); border-radius: 50% 50% 6px 6px / 38% 38% 6px 6px; opacity: .25; }
 .arch { position: absolute; inset: 0; border-radius: 50% 50% 4px 4px / 36% 36% 4px 4px; overflow: hidden; background: var(--bg-2); box-shadow: var(--shadow); }
-.arch img { width: 100%; height: 100%; object-fit: cover; display: block; animation: settle 1.4s cubic-bezier(.2,.7,.2,1) both; }
+.arch .slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0; transform: scale(1.04); transition: opacity .45s ease, transform 1.4s ease; cursor: zoom-in; }
+.arch .slide.on { opacity: 1; transform: none; }
+.arch-nav { position: absolute; top: 52%; transform: translateY(-50%); z-index: 2; width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(255,255,255,.35); background: rgba(8,14,12,.45); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); color: #fff; display: grid; place-items: center; padding: 0; transition: background-color .2s ease; }
+.arch-nav:hover { background: rgba(8,14,12,.7); }
+.arch-nav svg { width: 20px; height: 20px; }
+.arch-prev { right: 10px; } .arch-next { left: 10px; }
+.tag-text { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+.tag-text b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.zoom-btn { flex: none; width: 34px; height: 34px; border-radius: 50%; border: 0; background: linear-gradient(135deg, var(--gold), var(--gold-2)); color: var(--on-gold); display: grid; place-items: center; padding: 0; }
+.zoom-btn svg { width: 18px; height: 18px; }
 .arch .pattern { opacity: .22; }
 .arch-empty { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 30px; color: var(--muted); font-size: 14px; }
 .arch-empty b { display: block; font-family: var(--display); font-weight: 600; font-size: 20px; color: var(--ink); }
-.niche-tag { position: absolute; bottom: 16px; inset-inline-start: 16px; inset-inline-end: 16px; background: color-mix(in srgb, var(--surface) 88%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-radius: 10px; padding: 10px 14px; font-size: 13px; display: flex; justify-content: space-between; gap: 10px; border: 1px solid var(--line); }
+.niche-tag { position: absolute; z-index: 3; bottom: 16px; inset-inline-start: 16px; inset-inline-end: 16px; background: color-mix(in srgb, var(--surface) 88%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-radius: 12px; padding: 7px 8px 7px 14px; padding-inline-start: 14px; padding-inline-end: 7px; font-size: 13px; display: flex; align-items: center; justify-content: space-between; gap: 10px; border: 1px solid var(--line); }
 .niche-tag b { font-weight: 500; }
 .niche-tag span { color: var(--gold); white-space: nowrap; }
 @keyframes settle { from { transform: scale(1.12); filter: saturate(.6); } to { transform: none; filter: none; } }
@@ -291,9 +300,17 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
         <div class="arch" id="arch">
           <div class="pattern" aria-hidden="true"></div>
           <div class="arch-empty" id="archEmpty"><div><b>أحدث أعمالنا</b>ستظهر هنا آخر صورة تُضاف للمعرض</div></div>
-          <img id="archImg" alt="" hidden>
+          <img class="slide" id="slideA" alt="" hidden>
+          <img class="slide" id="slideB" alt="" hidden>
+          <button class="arch-nav arch-prev" id="slidePrev" type="button" aria-label="الصورة السابقة" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>
+          <button class="arch-nav arch-next" id="slideNext" type="button" aria-label="الصورة التالية" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button>
         </div>
-        <figcaption class="niche-tag" id="archTag" hidden><b id="archTitle"></b><span id="archNum"></span></figcaption>
+        <figcaption class="niche-tag" id="archTag" hidden>
+          <span class="tag-text"><b id="archTitle"></b><span id="archNum"></span></span>
+          <button class="zoom-btn" id="slideZoom" type="button" aria-label="تكبير الصورة" title="تكبير">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2M11 8v6M8 11h6"/></svg>
+          </button>
+        </figcaption>
       </figure>
     </div>
   </section>
@@ -555,14 +572,56 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
     const dl = $("catList"); dl.textContent = "";
     new Set([...counts.keys(), ...DEFAULT_CATS]).forEach(c => { const o = document.createElement("option"); o.value = c; dl.appendChild(o); });
   }
+  // ---------- hero slideshow: crossfades through every design, one per second ----------
+  const slide = { i: 0, front: "slideA", timer: null, pauseUntil: 0, shownId: null, loading: false };
+  const SLIDE_MS = 1000;
+  function showSlide(i) {
+    const list = state.designs; if (!list.length) return;
+    slide.i = (i + list.length) % list.length;
+    const d = list[slide.i];
+    $("archTitle").textContent = label(d); $("archNum").textContent = "رقم " + AR(d.num);
+    if (slide.shownId === d.id) return;
+    slide.shownId = d.id;
+    const back = slide.front === "slideA" ? "slideB" : "slideA", img = $(back), old = $(slide.front);
+    img.hidden = false; img.alt = label(d);
+    const swap = () => { img.classList.add("on"); old.classList.remove("on"); slide.front = back; slide.loading = false; };
+    slide.loading = true; img.onload = swap; img.onerror = swap;
+    img.src = imgUrl(d, "thumb");
+    if (img.complete && img.naturalWidth) swap();
+    const nx = list[(slide.i + 1) % list.length]; if (nx) new Image().src = imgUrl(nx, "thumb");
+  }
+  function tickSlide() {
+    // wait for the current picture to arrive on slow connections before moving on
+    if (document.hidden || slide.loading || Date.now() < slide.pauseUntil || state.designs.length < 2 || !$("lb").hidden) return;
+    showSlide(slide.i + 1);
+  }
+  function nudgeSlide(step) { slide.pauseUntil = Date.now() + 4000; showSlide(slide.i + step); }
+  $("slideNext").onclick = () => nudgeSlide(1);
+  $("slidePrev").onclick = () => nudgeSlide(-1);
+  const zoomSlide = () => {
+    const d = state.designs[slide.i]; if (!d) return;
+    if (!state.view.includes(d)) { state.filter = "الكل"; render(); }
+    openLb(state.view.indexOf(d));
+  };
+  $("slideZoom").onclick = zoomSlide; $("slideA").onclick = zoomSlide; $("slideB").onclick = zoomSlide;
+  // hovering or touching the arch holds the current picture
+  $("arch").addEventListener("pointerenter", () => { slide.pauseUntil = Date.now() + 60000; });
+  $("arch").addEventListener("pointerleave", () => { slide.pauseUntil = Date.now() + 1500; });
+  let sx = null;
+  $("arch").addEventListener("touchstart", e => { sx = e.touches[0].clientX; slide.pauseUntil = Date.now() + 4000; }, { passive: true });
+  $("arch").addEventListener("touchend", e => {
+    if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; sx = null;
+    if (Math.abs(dx) > 40) nudgeSlide(dx > 0 ? 1 : -1);
+  });
+
   function renderHero() {
-    const d = state.designs[0];
-    $("archEmpty").hidden = !!d; $("archImg").hidden = !d; $("archTag").hidden = !d;
-    if (d) {
-      const img = $("archImg");
-      if (img.dataset.id !== d.id) { img.dataset.id = d.id; img.src = imgUrl(d, "full"); img.alt = label(d); }
-      $("archTitle").textContent = label(d); $("archNum").textContent = "رقم " + AR(d.num);
-    }
+    const list = state.designs, has = list.length > 0;
+    $("archEmpty").hidden = has; $("archTag").hidden = !has;
+    $("slidePrev").hidden = $("slideNext").hidden = list.length < 2;
+    if (!has) { $("slideA").hidden = $("slideB").hidden = true; slide.shownId = null; return; }
+    const cur = list.findIndex(d => d.id === slide.shownId);
+    showSlide(cur >= 0 ? cur : 0);
+    if (!slide.timer) slide.timer = setInterval(tickSlide, SLIDE_MS);
   }
   function renderWall() {
     state.view = state.filter === "الكل" ? state.designs : state.designs.filter(d => d.category === state.filter);
