@@ -232,7 +232,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
 .lb { position: fixed; inset: 0; z-index: 50; background: var(--scrim); color: #f2eee3; display: grid; grid-template-rows: auto 1fr auto;
   padding: calc(env(safe-area-inset-top, 0px) + 12px) max(14px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 16px) max(14px, env(safe-area-inset-left, 0px)); }
 .lb-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-.lb-count { font-variant-numeric: tabular-nums; opacity: .7; font-size: 13px; }
+.lb-count { font-variant-numeric: tabular-nums; color: #f0d595; font-family: var(--display); font-weight: 600; font-size: 18px; }
 .lb-stage { position: relative; display: grid; place-items: center; min-height: 0; }
 .lb-stage img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 4px; }
 .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 50px; height: 50px; border-radius: 50%; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.08); color: #fff; display: grid; place-items: center; }
@@ -702,8 +702,9 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
     state.idx = (state.idx + v.length) % v.length;
     const d = v[state.idx];
     $("lbImg").src = imgUrl(d, "full"); $("lbImg").alt = label(d);
-    $("lbTitle").textContent = label(d); $("lbCat").textContent = d.category + " · رقم " + AR(d.num); $("lbNote").textContent = d.note || "";
-    $("lbCount").textContent = AR(state.idx + 1) + " / " + AR(v.length);
+    $("lbTitle").textContent = label(d); $("lbCat").textContent = d.category; $("lbNote").textContent = d.note || "";
+    // the design's own number is unique across all sections, so customers can quote it
+    $("lbCount").textContent = "تصميم رقم " + AR(d.num);
     $("lbEdit").hidden = $("lbDel").hidden = !state.admin;
     $("lbPrev").hidden = $("lbNext").hidden = v.length < 2;
     const wa = state.info.whatsapp || state.info.phone;
@@ -801,8 +802,8 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
         const opt = { contentType: "image/jpeg", cacheControl: "31536000", upsert: false };
         const u1 = await sb.storage.from(BUCKET).upload("full/" + id + ".jpg", full, opt); if (u1.error) throw u1.error;
         const u2 = await sb.storage.from(BUCKET).upload("thumb/" + id + ".jpg", thumb, opt); if (u2.error) throw u2.error;
-        const t = state.pending.length > 1 && title ? title + " " + (done + 1) : title;
-        const ins = await sb.from("designs").insert({ category, title: t, note, image: id }); if (ins.error) throw ins.error;
+        // no per-batch counter in the title: the database number is the only design number
+        const ins = await sb.from("designs").insert({ category, title, note, image: id }); if (ins.error) throw ins.error;
         done++;
       } catch (err) { console.error(err); failed++; lastErr = (err && err.message) || String(err); }
     }
