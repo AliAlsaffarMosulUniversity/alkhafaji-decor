@@ -126,15 +126,14 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .tv { position: relative; grid-row: 1; width: 95vw; margin: 0 calc((100% - 95vw) / 2); display: grid; justify-items: center; }
 .tv-frame {
   width: 100%; padding: 14px 14px 0; border-radius: 22px;
-  /* walnut: fine grain lines over a warm vertical gradient, with a lit top edge */
+  /* maroon lacquer: a soft sheen sweeping across deep wine, with a lit top edge */
   background:
-    repeating-linear-gradient(91deg, rgba(40, 20, 8, .16) 0 1.5px, transparent 1.5px 6px),
-    repeating-linear-gradient(88deg, rgba(255, 220, 170, .07) 0 1px, transparent 1px 13px),
-    radial-gradient(120% 60% at 30% 20%, rgba(255, 210, 150, .18), transparent 60%),
-    linear-gradient(180deg, #8b5a32 0%, #6f4426 45%, #5b361d 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 225, 180, .35), inset 0 0 0 1px rgba(255, 220, 170, .12), inset 0 -4px 10px rgba(0, 0, 0, .35), 0 40px 70px -35px rgba(0, 0, 0, .65);
+    linear-gradient(115deg, rgba(255, 255, 255, .14) 0%, rgba(255, 255, 255, 0) 28%, rgba(255, 255, 255, 0) 70%, rgba(255, 255, 255, .06) 100%),
+    radial-gradient(120% 70% at 25% 0%, rgba(214, 72, 104, .45), transparent 60%),
+    linear-gradient(180deg, #8f1f3c 0%, #6e1530 45%, #4c0b1d 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 200, 215, .45), inset 0 0 0 1px rgba(255, 190, 205, .14), inset 0 -4px 10px rgba(0, 0, 0, .4), 0 40px 70px -35px rgba(60, 6, 20, .75);
 }
-.tv-bezel { padding: 7px; border-radius: 10px; background: linear-gradient(180deg, #161616, #050505); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .06), 0 2px 0 rgba(255, 220, 170, .15); }
+.tv-bezel { padding: 7px; border-radius: 10px; background: linear-gradient(180deg, #161616, #050505); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .06), 0 2px 0 rgba(255, 190, 205, .18); }
 .screen { position: relative; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: #050807; isolation: isolate; }
 /* glass glare across the panel */
 .screen::after { content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none; background: linear-gradient(115deg, rgba(255, 255, 255, .13) 0%, rgba(255, 255, 255, .03) 32%, transparent 33%, transparent 100%); }
@@ -340,7 +339,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
           <div><b id="factDesigns">0</b><span>تصميم منفّذ</span></div>
           <div><b id="factCats">0</b><span>أقسام</span></div>        </div>
       </div>
-      <!-- showroom TV: wooden frame, black bezel, story-style slideshow on the screen -->
+      <!-- showroom TV: maroon lacquer frame, black bezel, story-style slideshow on the screen -->
       <figure class="tv">
         <div class="tv-frame">
           <div class="tv-bezel">
