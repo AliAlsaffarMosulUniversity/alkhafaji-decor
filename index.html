@@ -234,6 +234,9 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
 .ghost { border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.06); color: #fff; padding: 7px 16px; border-radius: 999px; font-size: 14px; }
 .lb-tools { display: flex; gap: 8px; }
 
+.qr-card { display: block; width: min(100%, 340px); height: auto; margin: 0 auto; border-radius: 14px; box-shadow: var(--shadow); }
+.qr-link { text-align: center; font-size: 13px; color: var(--muted); word-break: break-all; }
+
 .toast { position: fixed; z-index: 60; top: calc(env(safe-area-inset-top, 0px) + 70px); left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 20px; border-radius: 999px; font-size: 14px; box-shadow: var(--shadow); }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
@@ -248,6 +251,9 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
     <nav>
       <a class="navlink" href="#designs">التصاميم</a>
       <a class="navlink" href="#contact">تواصل</a>
+      <button class="round" id="qrBtn" type="button" title="رمز QR للمشاركة" aria-label="رمز QR للمشاركة">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3" stroke-linecap="round"/></svg>
+      </button>
       <button class="round" id="installBtn" type="button" title="تثبيت التطبيق" aria-label="تثبيت التطبيق" hidden>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
       </button>
@@ -327,6 +333,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
         <a class="btn" id="cCall" href="#" hidden>اتصال</a>
         <a class="btn" id="cInsta" href="#" target="_blank" rel="noopener" hidden>انستغرام</a>
         <button class="btn" id="cCopy" type="button" hidden>نسخ الرقم</button>
+        <button class="btn" id="cQr" type="button">رمز QR للمعرض</button>
       </div>
     </div>
   </section>
@@ -424,6 +431,23 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
   </div>
 </dialog>
 
+<!-- QR share card -->
+<dialog id="qrDlg">
+  <div class="panel">
+    <h2>شارك المعرض</h2>
+    <p>اطبع الرمز على كارت أو لافتة المحل، أو أرسله للزبائن. أي شخص يمسحه بكاميرا الهاتف يفتح المعرض مباشرة.</p>
+    <canvas id="qrCanvas" class="qr-card" width="1080" height="1350" aria-label="بطاقة رمز QR لرابط المعرض"></canvas>
+    <div class="qr-link" id="qrLink" dir="ltr"></div>
+    <div class="msg" id="qrMsg"></div>
+    <div class="row" style="justify-content:center">
+      <button class="btn gold small" type="button" id="qrSave">تحميل الصورة</button>
+      <button class="btn small" type="button" id="qrShare" hidden>مشاركة</button>
+      <button class="btn small" type="button" id="qrCopy">نسخ الرابط</button>
+      <button class="btn small" type="button" data-close>إغلاق</button>
+    </div>
+  </div>
+</dialog>
+
 <!-- lightbox -->
 <div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="عرض التصميم">
   <div class="lb-top">
@@ -450,6 +474,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
 
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script>
 (() => {
   const $ = id => document.getElementById(id);
@@ -752,6 +777,93 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
   }
   $("installBtn").onclick = install; $("installLink").onclick = install;
   if ("serviceWorker" in navigator && location.protocol !== "file:") navigator.serviceWorker.register("sw.js").catch(() => {});
+
+  // ---------- QR share card ----------
+  const siteUrl = () => location.origin + location.pathname;
+  const fileName = "qr-" + location.pathname.split("/").filter(Boolean).pop() + ".png";
+  const loadImg = src => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
+  function roundRect(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+
+  async function drawQrCard() {
+    const c = $("qrCanvas"), g = c.getContext("2d"), W = c.width, H = c.height, url = siteUrl();
+    const name = state.info.name || "ديكورات محمد الخفاجي";
+    try { await Promise.all([document.fonts.load("700 80px 'Aref Ruqaa'"), document.fonts.load("400 36px Alexandria")]); } catch (e) {}
+
+    // card: lacquered green with a double gold frame
+    g.fillStyle = "#0b1412"; g.fillRect(0, 0, W, H);
+    g.strokeStyle = "#d9b56a"; g.lineWidth = 3; roundRect(g, 40, 40, W - 80, H - 80, 28); g.stroke();
+    g.globalAlpha = .35; g.lineWidth = 1.5; roundRect(g, 58, 58, W - 116, H - 116, 20); g.stroke(); g.globalAlpha = 1;
+
+    g.direction = "rtl"; g.textAlign = "center"; g.textBaseline = "alphabetic";
+    const grad = g.createLinearGradient(200, 0, W - 200, 0); grad.addColorStop(0, "#d9b56a"); grad.addColorStop(.5, "#f0d595"); grad.addColorStop(1, "#d9b56a");
+    let size = 96; g.font = `700 ${size}px 'Aref Ruqaa', 'Amiri', serif`;
+    while (g.measureText(name).width > W - 200 && size > 50) { size -= 4; g.font = `700 ${size}px 'Aref Ruqaa', 'Amiri', serif`; }
+    g.fillStyle = grad; g.fillText(name, W / 2, 200);
+    g.font = "400 34px Alexandria, Tahoma, sans-serif"; g.fillStyle = "#9ba79f";
+    g.fillText("أسقف جبس بورد · جدران · واجهات", W / 2, 262);
+
+    // white plate holding the code (dark-on-white keeps it scannable)
+    const P = 680, px = (W - P) / 2, py = 320;
+    g.fillStyle = "#ffffff"; roundRect(g, px, py, P, P, 36); g.fill();
+    const qr = qrcode(0, "H"); qr.addData(url); qr.make();
+    const n = qr.getModuleCount(), area = P - 80, cell = area / n, ox = px + 40, oy = py + 40;
+    g.fillStyle = "#0b1412";
+    const finder = (r, col) => (r < 7 && col < 7) || (r < 7 && col >= n - 7) || (r >= n - 7 && col < 7);
+    for (let r = 0; r < n; r++) for (let col = 0; col < n; col++) {
+      if (!qr.isDark(r, col) || finder(r, col)) continue;
+      // full-size modules with a soft corner: adjacent cells merge so every scanner reads them
+      roundRect(g, ox + col * cell, oy + r * cell, cell + .6, cell + .6, cell * .18); g.fill();
+    }
+    // finder eyes drawn as rounded frames in the brand green
+    for (const [fr, fc] of [[0, 0], [0, n - 7], [n - 7, 0]]) {
+      const x = ox + fc * cell, y = oy + fr * cell;
+      g.fillStyle = "#0f4e40"; roundRect(g, x, y, cell * 7, cell * 7, cell * 1.8); g.fill();
+      g.fillStyle = "#ffffff"; roundRect(g, x + cell, y + cell, cell * 5, cell * 5, cell * 1.2); g.fill();
+      g.fillStyle = "#0b1412"; roundRect(g, x + cell * 2, y + cell * 2, cell * 3, cell * 3, cell * .9); g.fill();
+    }
+    // centre emblem (error correction H tolerates it)
+    try {
+      const logo = await loadImg("icon-192.png"), L = area * .2, lx = ox + (area - L) / 2, ly = oy + (area - L) / 2;
+      g.fillStyle = "#ffffff"; roundRect(g, lx - 12, ly - 12, L + 24, L + 24, 22); g.fill();
+      g.drawImage(logo, lx, ly, L, L);
+    } catch (e) {}
+
+    g.direction = "rtl"; g.fillStyle = "#efe9dc"; g.font = "500 42px Alexandria, Tahoma, sans-serif";
+    g.fillText("امسح الرمز لتصفّح تصاميمنا", W / 2, 1110);
+    const wa = state.info.whatsapp || state.info.phone;
+    if (wa) { g.direction = "ltr"; g.fillStyle = "#d9b56a"; g.font = "500 36px Alexandria, Tahoma, sans-serif"; g.fillText(wa, W / 2, 1175); }
+    g.direction = "ltr"; g.fillStyle = "#6f7c75"; g.font = "400 24px Alexandria, Tahoma, sans-serif";
+    g.fillText(url.replace(/^https?:\/\//, "").replace(/\/$/, ""), W / 2, wa ? 1240 : 1190);
+  }
+
+  const qrBlob = () => new Promise(res => $("qrCanvas").toBlob(res, "image/png"));
+  async function openQr() {
+    if (!window.qrcode) { toast("تعذّر تحميل مولّد الرمز. تحقق من الإنترنت."); return; }
+    $("qrLink").textContent = siteUrl(); $("qrMsg").textContent = "";
+    $("qrShare").hidden = !navigator.share;
+    $("qrDlg").showModal();
+    await drawQrCard();
+  }
+  $("qrBtn").onclick = openQr; $("cQr").onclick = openQr;
+  $("qrSave").onclick = async () => {
+    const blob = await qrBlob(); const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = fileName; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    $("qrMsg").className = "msg"; $("qrMsg").textContent = "حُفظت الصورة في التنزيلات. يمكنك طباعتها أو إرسالها.";
+  };
+  $("qrShare").onclick = async () => {
+    const name = state.info.name || "ديكورات محمد الخفاجي";
+    try {
+      const file = new File([await qrBlob()], fileName, { type: "image/png" });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) await navigator.share({ files: [file], title: name, text: "تصفّح تصاميم " + name + ": " + siteUrl() });
+      else await navigator.share({ title: name, text: "تصفّح تصاميم " + name, url: siteUrl() });
+    } catch (e) { /* the viewer closed the share sheet */ }
+  };
+  $("qrCopy").onclick = async () => {
+    try { await navigator.clipboard.writeText(siteUrl()); toast("تم نسخ رابط المعرض"); }
+    catch { const r = document.createRange(); r.selectNodeContents($("qrLink")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast("الرابط محدد، انسخه"); }
+  };
+  if (location.hash === "#qr") setTimeout(openQr, 400);
 
   applyInfo({});
   load();
