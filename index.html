@@ -159,7 +159,11 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .chip .n { font-size: 12px; opacity: .65; margin-inline-start: 6px; font-variant-numeric: tabular-nums; }
 
 .wall { columns: 3 300px; column-gap: 16px; }
-.tile { break-inside: avoid; margin: 0 0 16px; position: relative; display: block; width: 100%; padding: 0; border: 0; background: var(--bg-2); border-radius: 6px; overflow: hidden; text-align: start; color: #fff; animation: rise .6s ease both; }
+.tile-wrap { break-inside: avoid; margin: 0 0 16px; position: relative; }
+.tile-del { position: absolute; top: 10px; inset-inline-end: 10px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); background: rgba(150, 40, 25, .82); color: #fff; display: grid; place-items: center; padding: 0; box-shadow: 0 6px 16px -6px rgba(0,0,0,.6); transition: transform .15s ease, background-color .15s ease; }
+.tile-del:hover { background: #b23a26; transform: scale(1.08); }
+.tile-del svg { width: 18px; height: 18px; }
+.tile { margin: 0; position: relative; display: block; width: 100%; padding: 0; border: 0; background: var(--bg-2); border-radius: 6px; overflow: hidden; text-align: start; color: #fff; animation: rise .6s ease both; }
 .tile img { display: block; width: 100%; height: auto; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
 .tile::after { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(255,255,255,.0); border-radius: 3px; transition: border-color .35s ease; pointer-events: none; }
 .tile:hover::after { border-color: rgba(240, 213, 149, .8); }
@@ -242,6 +246,12 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
 .lb-info .btn { margin-top: 8px; }
 .ghost { border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.06); color: #fff; padding: 7px 16px; border-radius: 999px; font-size: 14px; }
 .lb-tools { display: flex; gap: 8px; }
+.ghost-danger { border-color: rgba(231, 130, 111, .5); color: #ffb3a4; }
+.del-preview { display: flex; gap: 14px; align-items: center; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 10px; }
+.del-preview img { width: 84px; height: 84px; object-fit: cover; border-radius: 8px; flex: none; }
+.del-preview div { display: grid; min-width: 0; }
+.del-preview b { font-family: var(--display); font-weight: 600; }
+.del-preview span { font-size: 13px; color: var(--muted); }
 
 .qr-card { display: block; width: min(100%, 340px); height: auto; margin: 0 auto; border-radius: 14px; box-shadow: var(--shadow); }
 .qr-link { text-align: center; font-size: 13px; color: var(--muted); word-break: break-all; }
@@ -249,7 +259,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
 .toast { position: fixed; z-index: 60; top: calc(env(safe-area-inset-top, 0px) + 70px); left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 20px; border-radius: 999px; font-size: 14px; box-shadow: var(--shadow); }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
-@media (max-width: 520px) { .wall { columns: 2 150px; column-gap: 10px; } .tile { margin-bottom: 10px; } .tile .cap { padding: 30px 10px 10px; } .tile .cap b { font-size: 14px; } .tile .cap span { display: none; } }
+@media (max-width: 520px) { .wall { columns: 2 150px; column-gap: 10px; } .tile-wrap { margin-bottom: 10px; } .tile-del { top: 8px; inset-inline-end: 8px; width: 34px; height: 34px; } .tile .cap { padding: 30px 10px 10px; } .tile .cap b { font-size: 14px; } .tile .cap span { display: none; } }
 </style>
 </head>
 <body>
@@ -448,6 +458,17 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
   </div>
 </dialog>
 
+<!-- delete confirmation -->
+<dialog id="delDlg">
+  <div class="panel">
+    <h2>حذف التصميم</h2>
+    <div class="del-preview"><img id="delImg" alt=""><div><b id="delTitle"></b><span id="delMeta"></span></div></div>
+    <p>سيُحذف التصميم وصورته من الموقع نهائياً ولن يراه الزبائن بعد الآن. لا يمكن التراجع عن الحذف.</p>
+    <div class="msg" id="delMsg"></div>
+    <div class="row"><button class="btn small" type="button" data-close>إلغاء</button><button class="btn small danger" type="button" id="delGo">نعم، احذف</button></div>
+  </div>
+</dialog>
+
 <!-- QR share card -->
 <dialog id="qrDlg">
   <div class="panel">
@@ -471,6 +492,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
     <span class="lb-count" id="lbCount"></span>
     <span class="lb-tools">
       <button class="ghost" id="lbEdit" type="button" hidden>تعديل</button>
+      <button class="ghost ghost-danger" id="lbDel" type="button" hidden>حذف</button>
       <button class="ghost" id="lbClose" type="button">إغلاق ✕</button>
     </span>
   </div>
@@ -505,6 +527,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
 
   const imgUrl = (d, size) => CFG.SUPABASE_URL + "/storage/v1/object/public/" + BUCKET + "/" + size + "/" + d.image + ".jpg";
   const label = d => d.title || ("تصميم " + AR(d.num));
+  const TRASH_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>';
 
   function toast(t) { const el = $("toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => el.hidden = true, 2600); }
   document.querySelectorAll("[data-close]").forEach(b => b.onclick = () => b.closest("dialog").close());
@@ -635,7 +658,16 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
       const b = document.createElement("b"); b.textContent = label(d);
       const s = document.createElement("span"); s.textContent = d.category;
       cap.append(b, s); t.append(img, num, cap); t.onclick = () => openLb(i);
-      wall.appendChild(t);
+      // a wrapper lets the owner's delete button sit beside (not inside) the tile button
+      const w = document.createElement("div"); w.className = "tile-wrap"; w.appendChild(t);
+      if (state.admin) {
+        const del = document.createElement("button"); del.type = "button"; del.className = "tile-del";
+        del.title = "حذف التصميم"; del.setAttribute("aria-label", "حذف " + label(d));
+        del.innerHTML = TRASH_SVG;
+        del.onclick = () => askDelete(d);
+        w.appendChild(del);
+      }
+      wall.appendChild(w);
     });
     const none = state.designs.length === 0;
     $("empty").hidden = !none; wall.hidden = none;
@@ -672,7 +704,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
     $("lbImg").src = imgUrl(d, "full"); $("lbImg").alt = label(d);
     $("lbTitle").textContent = label(d); $("lbCat").textContent = d.category + " · رقم " + AR(d.num); $("lbNote").textContent = d.note || "";
     $("lbCount").textContent = AR(state.idx + 1) + " / " + AR(v.length);
-    $("lbEdit").hidden = !state.admin;
+    $("lbEdit").hidden = $("lbDel").hidden = !state.admin;
     $("lbPrev").hidden = $("lbNext").hidden = v.length < 2;
     const wa = state.info.whatsapp || state.info.phone;
     $("lbWa").hidden = !wa;
@@ -796,11 +828,34 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
   $("delBtn").onclick = () => { $("delConfirm").hidden = false; };
   $("delNo").onclick = () => { $("delConfirm").hidden = true; };
   $("delYes").onclick = async () => {
-    const d = state.editing;
-    const { error } = await sb.from("designs").delete().eq("id", d.id);
-    if (error) { $("editMsg").className = "msg err"; $("editMsg").textContent = "تعذّر الحذف. حاول مجدداً."; return; }
-    sb.storage.from(BUCKET).remove(["full/" + d.image + ".jpg", "thumb/" + d.image + ".jpg"]);
-    $("editDlg").close(); closeLb(); toast("تم الحذف"); load();
+    const err = await deleteDesign(state.editing);
+    if (err) { $("editMsg").className = "msg err"; $("editMsg").textContent = err; return; }
+    $("editDlg").close();
+  };
+
+  // ---------- delete (tile trash button, lightbox, edit dialog) ----------
+  async function deleteDesign(d) {
+    // .select() returns the removed rows, so a silently refused delete is caught too
+    const { data, error } = await sb.from("designs").delete().eq("id", d.id).select("id");
+    if (error || !data || !data.length) return "تعذّر الحذف. تأكد أنك مسجّل الدخول ثم حاول مجدداً.";
+    await sb.storage.from(BUCKET).remove(["full/" + d.image + ".jpg", "thumb/" + d.image + ".jpg"]);
+    closeLb(); toast("تم حذف " + label(d)); await load();
+    return null;
+  }
+  let deleting = null;
+  function askDelete(d) {
+    deleting = d;
+    $("delImg").src = imgUrl(d, "thumb"); $("delTitle").textContent = label(d);
+    $("delMeta").textContent = d.category + " · رقم " + AR(d.num);
+    $("delMsg").textContent = ""; $("delGo").disabled = false; $("delDlg").showModal();
+  }
+  $("lbDel").onclick = () => askDelete(state.view[state.idx]);
+  $("delGo").onclick = async () => {
+    $("delGo").disabled = true; $("delMsg").className = "msg"; $("delMsg").textContent = "جارٍ الحذف…";
+    const err = await deleteDesign(deleting);
+    $("delGo").disabled = false;
+    if (err) { $("delMsg").className = "msg err"; $("delMsg").textContent = err; return; }
+    $("delDlg").close();
   };
 
   // ---------- shop info ----------
