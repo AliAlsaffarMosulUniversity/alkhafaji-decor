@@ -15,7 +15,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=El+Messiri:wght@500;600;700&family=Alexandria:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Lalezar&family=El+Messiri:wght@500;600;700&family=Alexandria:wght@300;400;500;600&display=swap">
 <script>
   // apply saved theme before first paint
   try { const t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
@@ -233,11 +233,14 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .gold-wrap { position: relative; display: inline-block; }
 .contact h2 {
   display: inline-block;
+  font-family: "Lalezar", "Aref Ruqaa", "Amiri", serif; font-weight: 400;
+  font-size: clamp(44px, 8vw, 76px); line-height: 1.35;
+  letter-spacing: 0; word-spacing: .08em; font-kerning: normal; text-rendering: optimizeLegibility;
   background: linear-gradient(100deg, #a9780f 0%, #e8c065 22%, #fff7d9 38%, #f2cf75 50%, #b8860b 68%, #e8c065 85%, #a9780f 100%);
   background-size: 260% 100%;
   -webkit-background-clip: text; background-clip: text;
   color: transparent; -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 1px 6px rgba(240, 200, 100, .35));
+  filter: drop-shadow(0 1px 0 #8a5f0c) drop-shadow(0 2px 0 #6b4709) drop-shadow(0 5px 6px rgba(0, 0, 0, .45)) drop-shadow(0 0 14px rgba(244, 205, 110, .45));
   animation: goldSweep 1s linear infinite;
 }
 .contact p { color: #f3d98b; opacity: 1; }
