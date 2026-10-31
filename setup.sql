@@ -48,3 +48,27 @@ drop policy if exists "owner uploads images" on storage.objects;
 create policy "owner uploads images" on storage.objects for insert to authenticated with check (bucket_id = 'designs');
 drop policy if exists "owner deletes images" on storage.objects;
 create policy "owner deletes images" on storage.objects for delete to authenticated using (bucket_id = 'designs');
+
+-- Visit counter: one row per day (Baghdad time). Visitors cannot touch the table directly;
+-- they can only call count_visit(), which adds one and returns the totals.
+create table if not exists public.visit_days (
+  day date primary key,
+  n bigint not null default 0
+);
+alter table public.visit_days enable row level security;
+revoke all on public.visit_days from anon, authenticated;
+
+create or replace function public.count_visit(bump boolean default true)
+returns json language plpgsql security definer set search_path = public as $$
+declare d date := (now() at time zone 'Asia/Baghdad')::date;
+begin
+  if bump then
+    insert into visit_days (day, n) values (d, 1)
+    on conflict (day) do update set n = visit_days.n + 1;
+  end if;
+  return json_build_object(
+    'total', coalesce((select sum(n) from visit_days), 0),
+    'today', coalesce((select n from visit_days where day = d), 0));
+end $$;
+revoke all on function public.count_visit(boolean) from public;
+grant execute on function public.count_visit(boolean) to anon, authenticated;

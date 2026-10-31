@@ -15,7 +15,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Lalezar&family=El+Messiri:wght@500;600;700&family=Alexandria:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=El+Messiri:wght@500;600;700&family=Alexandria:wght@300;400;500;600&display=swap">
 <script>
   // apply saved theme before first paint
   try { const t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
@@ -229,35 +229,28 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .contact .btn { background: rgba(255,255,255,.1); color: #fff; border-color: rgba(255,255,255,.25); }
 .contact .btn.gold { background: linear-gradient(135deg, #ffffff, #f7d3db); color: #7d1631; }
 .contact .cta { margin: 0; }
-/* gold diamond-shimmer text */
-.gold-wrap { position: relative; display: inline-block; }
-.contact h2 {
-  display: inline-block;
-  font-family: "Lalezar", "Aref Ruqaa", "Amiri", serif; font-weight: 400;
-  font-size: clamp(44px, 8vw, 76px); line-height: 1.35;
-  letter-spacing: 0; word-spacing: .08em; font-kerning: normal; text-rendering: optimizeLegibility;
-  background: linear-gradient(100deg, #a9780f 0%, #e8c065 22%, #fff7d9 38%, #f2cf75 50%, #b8860b 68%, #e8c065 85%, #a9780f 100%);
-  background-size: 260% 100%;
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent; -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 1px 0 #8a5f0c) drop-shadow(0 2px 0 #6b4709) drop-shadow(0 5px 6px rgba(0, 0, 0, .45)) drop-shadow(0 0 14px rgba(244, 205, 110, .45));
-  animation: goldSweep 1s linear infinite;
-}
-.contact p { color: #f3d98b; opacity: 1; }
-.contact .lines { color: #f3d98b; }
-.contact .lines b { color: #ffe9a8; }
-.gold-spark { position: absolute; width: 18px; height: 18px; pointer-events: none; opacity: 0; background: #fffbe8;
-  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
-  filter: drop-shadow(0 0 5px #fff3bf) drop-shadow(0 0 10px #f2cf75);
-  animation: goldTwinkle 1s ease-in-out infinite; }
-.gold-spark.s1 { top: 4%; right: 12%; animation-delay: 0s; }
-.gold-spark.s2 { top: 38%; right: 52%; width: 14px; height: 14px; animation-delay: .33s; }
-.gold-spark.s3 { bottom: 6%; right: 82%; width: 16px; height: 16px; animation-delay: .66s; }
-@keyframes goldSweep { from { background-position: 130% 0; } to { background-position: -130% 0; } }
-@keyframes goldTwinkle { 0%, 100% { opacity: 0; transform: scale(.2) rotate(0deg); } 45% { opacity: 1; transform: scale(1.15) rotate(45deg); } 70% { opacity: 0; transform: scale(.4) rotate(90deg); } }
-@media (prefers-reduced-motion: reduce) { .contact h2, .gold-spark { animation: none; } .gold-spark { display: none; } }
 @media (max-width: 760px) { .contact .wrap { grid-template-columns: 1fr; text-align: center; } .contact .lines span { justify-content: center; } .contact .cta { justify-content: center; } }
 
+/* visit counter: white card with a maroon lacquer badge and an odometer-style count-up */
+.visits { padding-block: clamp(28px, 5vw, 56px); }
+.visits .card { max-width: 780px; margin-inline: auto; position: relative; overflow: hidden; border-radius: 22px; padding: 24px clamp(18px, 4vw, 38px); display: grid; grid-template-columns: auto 1fr auto; gap: 22px; align-items: center; background: var(--surface); border: 1px solid var(--line); box-shadow: 0 30px 60px -40px rgba(92, 14, 34, .6); }
+.visits .card::before { content: ""; position: absolute; inset-block: 0; inset-inline-start: 0; width: 6px; background: linear-gradient(180deg, #b23a58, #5c0e22); }
+.visits .card::after { content: ""; position: absolute; width: 260px; height: 260px; inset-inline-end: -90px; top: -120px; border-radius: 50%; background: radial-gradient(circle, rgba(178, 58, 88, .16), transparent 70%); pointer-events: none; }
+.visits .eye { position: relative; width: 66px; height: 66px; border-radius: 20px; display: grid; place-items: center; color: #fff;
+  background: linear-gradient(115deg, rgba(255,255,255,.18), rgba(255,255,255,0) 40%), linear-gradient(180deg, #8f1f3c, #4c0b1d);
+  box-shadow: inset 0 1px 0 rgba(255,200,215,.5), 0 14px 26px -12px rgba(92, 14, 34, .8); }
+.visits .eye svg { width: 32px; height: 32px; }
+.visits .eye::after { content: ""; position: absolute; inset: -6px; border-radius: 24px; border: 2px solid #b23a58; opacity: 0; animation: eyering 2.6s ease-out infinite; }
+@keyframes eyering { 0% { opacity: .7; transform: scale(.92); } 100% { opacity: 0; transform: scale(1.18); } }
+.visits .total { display: grid; gap: 4px; }
+.visits .total small { font-size: 13px; color: var(--muted); }
+.visits .total b { font-family: var(--display); font-weight: 700; font-size: clamp(40px, 7vw, 58px); line-height: 1; color: var(--gold); font-variant-numeric: tabular-nums; letter-spacing: .5px; }
+.visits .today { display: grid; justify-items: center; gap: 2px; padding: 12px 20px; border-radius: 16px; background: var(--bg); border: 1px solid var(--line); text-align: center; }
+.visits .today b { font-family: var(--display); font-size: 26px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.visits .today span { font-size: 12px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+.visits .live { width: 8px; height: 8px; border-radius: 50%; background: #22b35e; box-shadow: 0 0 0 0 rgba(34, 179, 94, .6); animation: livedot 1.8s ease-out infinite; }
+@keyframes livedot { to { box-shadow: 0 0 0 8px rgba(34, 179, 94, 0); } }
+@media (max-width: 520px) { .visits .card { grid-template-columns: auto 1fr; gap: 16px; padding: 20px 18px; } .visits .eye { width: 54px; height: 54px; border-radius: 16px; } .visits .eye svg { width: 26px; height: 26px; } .visits .today { grid-column: 1 / -1; grid-auto-flow: column; justify-content: center; gap: 10px; padding: 10px; } }
 footer { padding-block: 26px calc(26px + env(safe-area-inset-bottom, 0px)); color: var(--muted); font-size: 13px; }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: center; }
 .linkish { background: none; border: 0; padding: 4px; color: var(--muted); text-decoration: underline; text-underline-offset: 4px; font-size: 13px; }
@@ -422,16 +415,19 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
     </div>
   </section>
 
+  <section class="visits gutter" id="visits" hidden>
+    <div class="card">
+      <div class="eye" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3.2"/></svg></div>
+      <div class="total"><small>عدد زيارات المعرض</small><b id="visTotal">٠</b></div>
+      <div class="today"><b id="visToday">٠</b><span><i class="live"></i>زيارة اليوم</span></div>
+    </div>
+  </section>
+
   <section class="contact gutter" id="contact">
     <div class="pattern" aria-hidden="true"></div>
     <div class="wrap">
       <div>
-        <div class="gold-wrap">
-          <h2>نصمّم مساحتك القادمة</h2>
-          <i class="gold-spark s1" aria-hidden="true"></i>
-          <i class="gold-spark s2" aria-hidden="true"></i>
-          <i class="gold-spark s3" aria-hidden="true"></i>
-        </div>
+        <h2>نصمّم مساحتك القادمة</h2>
         <p>أرسل لنا رقم التصميم الذي أعجبك، أو صورة مكانك، ونتفق على التفاصيل.</p>
         <div class="lines">
           <span id="cPhoneLine" hidden>الهاتف: <b class="ltr" id="cPhone"></b></span>
@@ -1132,7 +1128,32 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
   if (location.hash === "#qr") setTimeout(openQr, 400);
 
   applyInfo({});
+  // ---------- visit counter: one count per browser session, numbers roll up when the card comes into view ----------
+  function countUp(el, to) {
+    const from = 0, start = performance.now(), dur = Math.min(2200, 900 + to * 2);
+    const step = now => {
+      const t = Math.min(1, (now - start) / dur), e = 1 - Math.pow(1 - t, 4);
+      el.textContent = AR(Math.round(from + (to - from) * e));
+      if (t < 1) requestAnimationFrame(step);
+    };
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) el.textContent = AR(to); else requestAnimationFrame(step);
+  }
+  async function visits() {
+    if (!sb) return;
+    let first = true;
+    try { first = !sessionStorage.getItem("decor-visit"); sessionStorage.setItem("decor-visit", "1"); } catch (e) {}
+    const { data, error } = await sb.rpc("count_visit", { bump: first });
+    if (error || !data) return;
+    $("visits").hidden = false;
+    const run = () => { countUp($("visTotal"), data.total); countUp($("visToday"), data.today); };
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { io.disconnect(); run(); } }, { threshold: .4 });
+      io.observe($("visits"));
+    } else run();
+  }
+
   load();
+  visits();
 })();
 </script>
 </body>
