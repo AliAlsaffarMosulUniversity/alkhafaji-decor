@@ -1,5 +1,5 @@
 // Offline shell for the installed app. Bump VERSION after changing site files.
-const VERSION = "v15";
+const VERSION = "v16";
 const SHELL = `shell-${VERSION}`;
 const RUNTIME = `runtime-${VERSION}`;
 const SHELL_FILES = ["./", "./index.html", "./config.js", "./manifest.webmanifest",

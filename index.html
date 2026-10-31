@@ -368,9 +368,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
             اطلب عبر واتساب
           </a>
         </div>
-        <div class="facts">
-          <div><b id="factDesigns">0</b><span>تصميم منفّذ</span></div>
-          <div><b id="factCats">0</b><span>أقسام</span></div>        </div>
+
       </div>
       <!-- showroom TV: maroon lacquer frame, black bezel, story-style slideshow on the screen -->
       <figure class="tv">
@@ -709,9 +707,6 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
       rail.appendChild(b);
     }
     rail.hidden = state.designs.length === 0;
-    $("factDesigns").textContent = AR(state.designs.length);
-    $("factCats").textContent = AR(counts.size);
-    document.querySelector(".facts").hidden = state.designs.length === 0;
     const dl = $("catList"); dl.textContent = "";
     new Set([...counts.keys(), ...DEFAULT_CATS]).forEach(c => { const o = document.createElement("option"); o.value = c; dl.appendChild(o); });
   }
