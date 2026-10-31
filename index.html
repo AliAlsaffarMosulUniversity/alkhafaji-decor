@@ -186,15 +186,19 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .chip[aria-pressed="true"] { background: var(--gold); color: var(--on-gold); border-color: var(--gold); box-shadow: 0 8px 18px -10px var(--gold); }
 .chip .n { font-size: 12px; opacity: .65; margin-inline-start: 6px; font-variant-numeric: tabular-nums; }
 
-.wall { columns: 3 300px; column-gap: 16px; }
-.tile-wrap { break-inside: avoid; margin: 0 0 16px; position: relative; }
-.tile-del { position: absolute; top: 10px; inset-inline-end: 10px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); background: rgba(150, 40, 25, .82); color: #fff; display: grid; place-items: center; padding: 0; box-shadow: 0 6px 16px -6px rgba(0,0,0,.6); transition: transform .15s ease, background-color .15s ease; }
+.wall { columns: 4 210px; column-gap: 18px; }
+/* each photo sits in a small maroon lacquer frame, matching the TV */
+.tile-wrap { break-inside: avoid; margin: 0 0 18px; position: relative; padding: 7px; border-radius: 12px;
+  background: linear-gradient(115deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,.06) 100%), linear-gradient(180deg, #8f1f3c 0%, #6e1530 45%, #4c0b1d 100%);
+  box-shadow: inset 0 1px 0 rgba(255,200,215,.45), inset 0 0 0 1px rgba(255,190,205,.14), 0 18px 30px -20px rgba(60,6,20,.7); transition: transform .3s ease, box-shadow .3s ease; }
+.tile-wrap:hover { transform: translateY(-3px); box-shadow: inset 0 1px 0 rgba(255,200,215,.45), inset 0 0 0 1px rgba(255,190,205,.14), 0 24px 36px -20px rgba(60,6,20,.85); }
+.tile-del { position: absolute; top: 15px; inset-inline-end: 15px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3); background: rgba(150, 40, 25, .82); color: #fff; display: grid; place-items: center; padding: 0; box-shadow: 0 6px 16px -6px rgba(0,0,0,.6); transition: transform .15s ease, background-color .15s ease; }
 .tile-del:hover { background: #b23a26; transform: scale(1.08); }
-.tile-wa { position: absolute; bottom: 12px; inset-inline-end: 12px; z-index: 2; width: 40px; height: 40px; border-radius: 50%; background: #25d366; color: #fff; display: grid; place-items: center; box-shadow: 0 6px 16px -6px rgba(0,0,0,.6); transition: transform .15s ease; }
+.tile-wa { position: absolute; bottom: 15px; inset-inline-end: 15px; z-index: 2; width: 34px; height: 34px; border-radius: 50%; background: #25d366; color: #fff; display: grid; place-items: center; box-shadow: 0 6px 16px -6px rgba(0,0,0,.6); transition: transform .15s ease; }
 .tile-wa:hover { transform: scale(1.1); }
-.tile-wa svg { width: 22px; height: 22px; }
+.tile-wa svg { width: 19px; height: 19px; }
 .tile-del svg { width: 18px; height: 18px; }
-.tile { margin: 0; position: relative; display: block; width: 100%; padding: 0; border: 0; background: var(--bg-2); border-radius: 6px; overflow: hidden; text-align: start; color: #fff; animation: rise .6s ease both; }
+.tile { margin: 0; position: relative; display: block; width: 100%; padding: 0; border: 0; background: #2a0711; border-radius: 6px; overflow: hidden; text-align: start; color: #fff; animation: rise .6s ease both; cursor: zoom-in; }
 .tile img { display: block; width: 100%; height: auto; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
 /* until a photo arrives its tile keeps a real height, so lazy loading fetches only what is on screen */
 .tile img:not(.loaded) { aspect-ratio: 4 / 5; }
@@ -205,7 +209,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .tile:hover img { transform: scale(1.05); }
 .tile .num { position: absolute; top: 12px; inset-inline-start: 12px; background: rgba(10,16,14,.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); font-size: 12px; padding: 2px 10px; border-radius: 999px; font-variant-numeric: tabular-nums; }
 .tile .cap { position: absolute; inset: auto 0 0 0; padding: 40px 16px 14px; background: linear-gradient(to top, rgba(6,10,9,.78), transparent); display: grid; }
-.tile .cap b { font-family: var(--display); font-weight: 600; font-size: 17px; line-height: 1.4; }
+.tile .cap b { font-family: var(--display); font-weight: 600; font-size: 15px; line-height: 1.4; }
 .tile .cap span { font-size: 12px; color: #f7d3db; }
 @keyframes rise { from { opacity: .001; transform: translateY(14px); } }
 
@@ -295,7 +299,7 @@ dialog::backdrop { background: rgba(5, 9, 8, .55); backdrop-filter: blur(3px); }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
 @media (max-width: 520px) { .tv-frame { padding: 9px 9px 0; border-radius: 16px; } .tv-bezel { padding: 5px; } .tv-chin { height: 24px; } .tv-brand { font-size: 13px; } .screen-cap { padding: 26px 8px 8px; gap: 8px; font-size: 12px; } .cap-icon, .cap-arrow { width: 30px; height: 30px; } .story-bars { top: 8px; left: 10px; right: 10px; gap: 3px; } }
-@media (max-width: 520px) { .wall { columns: 2 150px; column-gap: 10px; } .tile-wrap { margin-bottom: 10px; } .tile-del { top: 8px; inset-inline-end: 8px; width: 34px; height: 34px; } .tile-wa { bottom: 8px; inset-inline-end: 8px; width: 34px; height: 34px; } .tile-wa svg { width: 19px; height: 19px; } .tile .cap { padding: 30px 10px 10px; } .tile .cap b { font-size: 14px; } .tile .cap span { display: none; } }
+@media (max-width: 520px) { .wall { columns: 3 96px; column-gap: 8px; } .tile-wrap { margin-bottom: 8px; padding: 4px; border-radius: 8px; } .tile { border-radius: 4px; } .tile .num { top: 6px; inset-inline-start: 6px; font-size: 10px; padding: 1px 6px; } .tile-del { top: 8px; inset-inline-end: 8px; width: 26px; height: 26px; } .tile-del svg { width: 14px; height: 14px; } .tile-wa { bottom: 8px; inset-inline-end: 8px; width: 26px; height: 26px; } .tile-wa svg { width: 15px; height: 15px; } .tile .cap { display: none; } .tile .cap { padding: 30px 10px 10px; } .tile .cap b { font-size: 14px; } .tile .cap span { display: none; } }
 </style>
 </head>
 <body>
